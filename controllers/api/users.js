@@ -1,4 +1,5 @@
-
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 
 
@@ -8,17 +9,7 @@ module.exports = {
     // checkToken,
     // updateUser,
     // getUser,
-    // getAgoraId
 };
-
-// async function getAgoraId(req, res) {
-//     try {
-//         res.status(200).json(process.env.AGORA_APP_ID);
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json(err);
-//     }
-// }
 
 // async function getUser(req, res) {
 //     try {
@@ -31,16 +22,11 @@ module.exports = {
 
 async function create(req, res) {
     try {
-        console.log("youve hit the server")
-        console.log(req.body)
-        // token will be a string
-        // const token = createJWT(newUser);
-        // Yes, we can serialize a string
-        // res.json(token);
-        res.json(req.body)
+        const user = await User.create(req.body);
+        const token = createJWT(user);
+        res.status(200).json(token);
     } catch (err) {
         console.log(err)
-        // Probably a dup email
         res.status(500).json(err);
     }
 }

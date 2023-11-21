@@ -1,6 +1,14 @@
 import StackNavigator from "../Navigation/StackNavigation.js";
+import { registerRootComponent } from 'expo';
+import { UserContext } from "../Context/UserContext.js";
 
 export default function App() {
-  return (<StackNavigator />)
+
+	return (
+		<UserContext>
+			<StackNavigator />
+		</UserContext>
+	)
 }
 
+registerRootComponent(App);

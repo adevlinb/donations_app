@@ -1,17 +1,22 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable, Button } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
 import Logo from "../../assets/mainLogo.png";
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
+import * as usersService from "../utilities/users-service";
+import { useContext, } from 'react';
+import { User } from '../Context/UserContext';
 
 
 export default function LoginScreen() {
+    const { user, setUser } = useContext(User);
+
     const login = {
         email: "",
         password: ""
     }
     const signUp = {
         email: "",
-        username: "",
+        name: "",
         password: ""
     }
 
@@ -26,23 +31,21 @@ export default function LoginScreen() {
     }
 
     async function handleLogin() {
-        console.log("login")
-        console.log(loginData)
+        setLoginData(login);
     }
-    
+
     function handleLoginChange(text, input) {
-        console.log(text, input)
-        setLoginData({...loginData, [input]: text});
+        setLoginData({ ...loginData, [input]: text });
     }
-    
+
     async function handleSignUp() {
-        console.log("signup")
-        console.log(signUpData)
+        const data = await usersService.signUp(signUpData);
+        setSignUpData(signUp);
+        setUser(usersService.getUser);
     }
-    
+
     function handleSignUpChange(text, input) {
-        console.log(text, input)
-        setSignUpData({...signUpData, [input]: text});
+        setSignUpData({ ...signUpData, [input]: text });
     }
 
     function checkCredentials() {
@@ -51,52 +54,52 @@ export default function LoginScreen() {
     }
 
 
-  return (
-    <SafeAreaView>
-        <View style={styles.mainView}>
-            {loginChoice !== "" ? <Pressable onPress={resetLoginChoice} style={styles.cancelButton}><Ionicons name="close-circle" size={24} color="black" /></Pressable> : "" }
-            <Image source={Logo} style={styles.logoImg} />
-            <View style={styles.mainInputContainer}>
-                {loginChoice !== "login" && loginChoice !== "signup" ?
-                    <>
-                    <Pressable style={styles.registerButton} onPress={() => setLoginChoice("login")}>
-                        <Text style={{color: "white"}}>Login</Text>
-                    </Pressable>
-                    <Pressable style={styles.registerButton} onPress={() => setLoginChoice("signup")}>
-                        <Text style={{color: "white"}}>Sign Up</Text>
-                    </Pressable>
-                    </>
-                    :
-                    <>
-                    {loginChoice === "login" && 
-                        <View style={styles.inputContainer}>
-                            <View style={styles.textInputContainer}>
-                                <TextInput value={loginData.email} onChangeText={(text) => handleLoginChange(text, "email")} style={styles.registerInputs} placeholder='email' autoCapitalize="none"></TextInput>
-                                <TextInput value={loginData.password} onChangeText={(text) => handleLoginChange(text, "password")} style={styles.registerInputs} placeholder='password' secureTextEntry autoCapitalize="none"></TextInput>
-                            </View>
-                            <Pressable style={styles.registerButton} onPress={handleLogin}>
-                                <Text style={{color: "white"}}>Login</Text>
+    return (
+        <SafeAreaView>
+            <View style={styles.mainView}>
+                {loginChoice !== "" ? <Pressable onPress={resetLoginChoice} style={styles.cancelButton}><Ionicons name="close-circle" size={24} color="black" /></Pressable> : ""}
+                <Image source={Logo} style={styles.logoImg} />
+                <View style={styles.mainInputContainer}>
+                    {loginChoice !== "login" && loginChoice !== "signup" ?
+                        <>
+                            <Pressable style={styles.registerButton} onPress={() => setLoginChoice("login")}>
+                                <Text style={{ color: "white" }}>Login</Text>
                             </Pressable>
-                        </View>
-                    }
-                    {loginChoice === "signup" && 
-                        <View style={styles.inputContainer}>
-                            <View style={styles.textInputContainer}>
-                                <TextInput value={signUpData.email} onChangeText={(text) => handleSignUpChange(text, "email")} style={styles.registerInputs} placeholder='email' autoCapitalize="none"></TextInput>
-                                <TextInput value={signUpData.username} onChangeText={(text) => handleSignUpChange(text, "username")} style={styles.registerInputs} placeholder='username' autoCapitalize="none"></TextInput>
-                                <TextInput value={signUpData.password} onChangeText={(text) => handleSignUpChange(text, "password")} style={styles.registerInputs} placeholder='password' secureTextEntry autoCapitalize="none"></TextInput>
-                            </View>
-                            <Pressable disabled={!checkCredentials()} style={checkCredentials() ? styles.registerButton : styles.registerButtonDisabled } onPress={handleSignUp}>
-                                <Text style={{color: "white"}}>SignUp</Text>
+                            <Pressable style={styles.registerButton} onPress={() => setLoginChoice("signup")}>
+                                <Text style={{ color: "white" }}>Sign Up</Text>
                             </Pressable>
-                        </View>
+                        </>
+                        :
+                        <>
+                            {loginChoice === "login" &&
+                                <View style={styles.inputContainer}>
+                                    <View style={styles.textInputContainer}>
+                                        <TextInput value={loginData.email} onChangeText={(text) => handleLoginChange(text, "email")} style={styles.registerInputs} placeholder='email' autoCapitalize="none"></TextInput>
+                                        <TextInput value={loginData.password} onChangeText={(text) => handleLoginChange(text, "password")} style={styles.registerInputs} placeholder='password' secureTextEntry autoCapitalize="none"></TextInput>
+                                    </View>
+                                    <Pressable style={styles.registerButton} onPress={handleLogin}>
+                                        <Text style={{ color: "white" }}>Login</Text>
+                                    </Pressable>
+                                </View>
+                            }
+                            {loginChoice === "signup" &&
+                                <View style={styles.inputContainer}>
+                                    <View style={styles.textInputContainer}>
+                                        <TextInput value={signUpData.email} onChangeText={(text) => handleSignUpChange(text, "email")} style={styles.registerInputs} placeholder='email' autoCapitalize="none"></TextInput>
+                                        <TextInput value={signUpData.name} onChangeText={(text) => handleSignUpChange(text, "name")} style={styles.registerInputs} placeholder='username' autoCapitalize="none"></TextInput>
+                                        <TextInput value={signUpData.password} onChangeText={(text) => handleSignUpChange(text, "password")} style={styles.registerInputs} placeholder='password' secureTextEntry autoCapitalize="none"></TextInput>
+                                    </View>
+                                    <Pressable disabled={!checkCredentials()} style={checkCredentials() ? styles.registerButton : styles.registerButtonDisabled} onPress={handleSignUp}>
+                                        <Text style={{ color: "white" }}>SignUp</Text>
+                                    </Pressable>
+                                </View>
+                            }
+                        </>
                     }
-                    </>
-                }
+                </View>
             </View>
-        </View>
-    </SafeAreaView>
-  )
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -120,12 +123,12 @@ const styles = StyleSheet.create({
     },
     textInputContainer: {
         gap: 15
-    },  
+    },
     inputContainer: {
         width: "100%",
         alignItems: 'stretch',
         gap: 15,
-        
+
     },
     registerButton: {
         padding: 20,
@@ -149,5 +152,4 @@ const styles = StyleSheet.create({
         borderRadius: 7.5,
         padding: 10,
     }
-
 })
