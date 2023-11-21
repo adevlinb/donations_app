@@ -4,25 +4,36 @@ import { useContext, } from 'react';
 import { User } from '../Context/UserContext';
 
 export default function QuestionnaireScreen() {
-    const { questionnaire } = useContext(User);
+    const { user, questionnaire, setQuestionnaire } = useContext(User);
     const [currentPage, setCurrentPage] = useState(0);
     const [updatedQuest, setUpdatedQuest] = useState(questionnaire);
+    const QUEST_KEY = {
+        0: "passionateIssues",
+        1: "locationScope",
+        2: "organizationType",
+        3: "specifics",
+        4: "donationFrequency",
+    }
 
     function changePage(direction) {
-        console.log(updatedQuest)
         if (direction === "backwards") {
             if (currentPage === 0) return;
-            else setCurrentPage(currentPage - 1);
+            return setCurrentPage(prev => prev - 1);
         }
 
         if (direction === "forwards") {
-            
+            if (currentPage === 4) return;
+            return setCurrentPage(prev => prev + 1);
         }
-        
+    }
+
+    async function submitQuestionnaire() {
+
     }
 
     return (
         <View>
+            <Text>Hello, {user.name}!</Text>
             <Text>QuestionnaireScreen</Text>
         </View>
     )

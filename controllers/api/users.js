@@ -21,9 +21,9 @@ async function getUser(req, res) {
     }
 }
 
-async function getQuestionnaire() {
+async function getQuestionnaire(req, res) {
         try {
-            const quest = Questionnaire.findOne({userId: req.params.id});
+            const quest = await Questionnaire.findOne({user: req.params.id});
             res.json(quest);
         } catch (err) {
             console.log(err)
@@ -34,6 +34,7 @@ async function getQuestionnaire() {
 async function create(req, res) {
     try {
         const user = await User.create(req.body);
+        const quest = Questionnaire.create({user: user._id})
         const token = createJWT(user);
         res.status(200).json(token);
     } catch (err) {
