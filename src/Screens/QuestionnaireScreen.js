@@ -1,51 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { useState } from 'react'
+import { useContext, } from 'react';
+import { User } from '../Context/UserContext';
 
 export default function QuestionnaireScreen() {
+    const { questionnaire } = useContext(User);
     const [currentPage, setCurrentPage] = useState(0);
-    const [pageOne, setPageOne] = useState({
-        social_justice: false,
-        mental_health: false,
-        gender_equality: false,
-        lgbtq_equality: false,
-        sustainable_development: false,
-        disaster_preparedness: false,
-    })
-    const [pageTwo, setPageTwo] = useState({
-        local: false,
-        national: false,
-        regional: false,
-        international: false,
-    })
-    const [pageThree, setPageThree] = useState({
-        nonprofit: false,
-        charitable: false,
-        community: false,
-        individual: false
-    })
-
-    const [pageFour, setPageFour] = useState({
-        faithBased: false,
-        educational: false,
-        healthcare: false,
-        humanitarian: false,
-        environmental: false,
-        political: false
-    })
-
-    const [pageFive, setPageFive] = useState({
-        onceYear: false,
-        twiceYear: false,
-        fourPlusYear: false,
-        onceMonth: false,
-    })
+    const [updatedQuest, setUpdatedQuest] = useState(questionnaire);
 
     function changePage(direction) {
+        console.log(updatedQuest)
         if (direction === "backwards") {
             if (currentPage === 0) return;
             else setCurrentPage(currentPage - 1);
         }
 
+        if (direction === "forwards") {
+            
+        }
         
     }
 

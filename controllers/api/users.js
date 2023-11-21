@@ -1,24 +1,35 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../../models/user');
-
+const Questionnaire = require('../../models/questionnaire');
 
 module.exports = {
     create,
-    // login,
+    getQuestionnaire,
+    login,
     // checkToken,
     // updateUser,
-    // getUser,
+    getUser,
 };
 
-// async function getUser(req, res) {
-//     try {
-//         res.json(req.user);
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json(err);
-//     }
-// }
+async function getUser(req, res) {
+    try {
+        res.json(req.user);
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(err);
+    }
+}
+
+async function getQuestionnaire() {
+        try {
+            const quest = Questionnaire.findOne({userId: req.params.id});
+            res.json(quest);
+        } catch (err) {
+            console.log(err)
+            res.status(500).json(err);
+        }
+}
 
 async function create(req, res) {
     try {
@@ -31,23 +42,22 @@ async function create(req, res) {
     }
 }
 
-// async function login(req, res) {
-//     try {
+async function login(req, res) {
+    try {
+        // Find the user by their email address
+        const email = await Email.findOne({ address: req.body.email });
+        const user = await User.findOne({ _id: email.userId });
+        if (!user) throw new Error();
 
-//         // Find the user by their email address
-//         const email = await Email.findOne({ address: req.body.email });
-//         const user = await User.findOne({ _id: email.userId });
-//         if (!user) throw new Error();
+        const match = await bcrypt.compare(req.body.password, user.password);
+        if (!match) throw new Error();
 
-//         const match = await bcrypt.compare(req.body.password, user.password);
-//         if (!match) throw new Error();
-
-//         res.json(createJWT(user));
-//     } catch (err) {
-//         console.log(err)
-//         res.status(500).json('Bad Credentials');
-//     }
-// }
+        res.json(createJWT(user));
+    } catch (err) {
+        console.log(err)
+        res.status(500).json('Bad Credentials');
+    }
+}
 
 // function checkToken(req, res) {
 //     res.json(req.exp)

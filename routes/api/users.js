@@ -6,4 +6,6 @@ const usersCtrl = require('../../controllers/api/users');
 // POST /api/users
 router.post('/', usersCtrl.create);
 
+router.get('/:id/questionnaire', usersCtrl.getQuestionnaire);
+
 module.exports = router;

@@ -13,6 +13,9 @@ export function getUser() {
 	return sendRequest(`${BASE_URL}/user`);
 }
 
+export function getQuestionnaire(userId) {
+	return sendRequest(`${BASE_URL}/${userId}/questionnaire`);
+}
 
 
 
