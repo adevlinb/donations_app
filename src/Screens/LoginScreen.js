@@ -58,7 +58,7 @@ export default function LoginScreen() {
         <SafeAreaView>
             <View style={styles.mainView}>
                 {loginChoice !== "" ? <Pressable onPress={resetLoginChoice} style={styles.cancelButton}><Ionicons name="close-circle" size={24} color="black" /></Pressable> : ""}
-                <Image source={Logo} style={styles.logoImg} />
+                <Image source={Logo} />
                 <View style={styles.mainInputContainer}>
                     {loginChoice !== "login" && loginChoice !== "signup" ?
                         <>

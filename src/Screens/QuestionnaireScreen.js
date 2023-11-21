@@ -1,30 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import { useState } from 'react'
 import { useContext, } from 'react';
 import { User } from '../Context/UserContext';
+import ProfileSetup from '../Components/Questionnaire/ProfileSetup';
+import QuestIntro from '../Components/Questionnaire/QuestIntro';
+import Questions from '../Components/Questionnaire/Questions';
 
 export default function QuestionnaireScreen() {
     const { user, questionnaire, setQuestionnaire } = useContext(User);
     const [currentPage, setCurrentPage] = useState(0);
     const [updatedQuest, setUpdatedQuest] = useState(questionnaire);
-    const QUEST_KEY = {
-        0: "passionateIssues",
-        1: "locationScope",
-        2: "organizationType",
-        3: "specifics",
-        4: "donationFrequency",
-    }
 
-    function changePage(direction) {
-        if (direction === "backwards") {
-            if (currentPage === 0) return;
-            return setCurrentPage(prev => prev - 1);
-        }
+    function nextPage() {
 
-        if (direction === "forwards") {
-            if (currentPage === 4) return;
-            return setCurrentPage(prev => prev + 1);
-        }
     }
 
     async function submitQuestionnaire() {
@@ -32,10 +20,11 @@ export default function QuestionnaireScreen() {
     }
 
     return (
-        <View>
-            <Text>Hello, {user.name}!</Text>
-            <Text>QuestionnaireScreen</Text>
-        </View>
+        <SafeAreaView>
+            {currentPage === 0 && <ProfileSetup user={user} nextPage={nextPage} />}
+            {currentPage === 1 && <QuestIntro user={user} nextPage={nextPage}/>}
+            {currentPage >= 2 && <Questions user={user} currentPage={currentPage} nextPage={nextPage} submitQuestionnaire={submitQuestionnaire} updatedQuest={updatedQuest} setUpdatedQuest={setUpdatedQuest} />}
+        </SafeAreaView>
     )
 }
 

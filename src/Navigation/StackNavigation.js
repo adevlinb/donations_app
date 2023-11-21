@@ -28,9 +28,6 @@ export default function StackNavigation() {
         getUser();
     }, [user])
 
-    // UsersService.logOut()
-    console.log(questionnaire, "quest")
-
     return (
         <NavigationContainer>
 
