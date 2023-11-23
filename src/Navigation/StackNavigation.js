@@ -12,40 +12,26 @@ import * as usersAPI from "../utilities/users-api";
 
 export default function StackNavigation() {
     const Stack = createNativeStackNavigator();
-    const { user, setUser, questionnaire, setQuestionnaire } = useContext(User);
-
-    useEffect(() => {
-        async function getUser() {
-            if (!user) {
-                const results = await UsersService.getUser();
-                setUser(results);
-            }
-            if (user) {
-                const quest = await usersAPI.getQuestionnaire(user._id);
-                setQuestionnaire(quest)
-            }
-        }
-        getUser();
-    }, [user])
+    const { user, setUser, questionnaire } = useContext(User);
 
     return (
         <NavigationContainer>
 
-                {user && questionnaire?.complete && 
-                <Stack.Navigator>
-                    <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-                </Stack.Navigator>
-                }
+            {user && questionnaire?.complete && 
+            <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>
+            }
 
-                {user && !questionnaire?.complete && 
-                <Stack.Navigator>
-                    <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} options={{ headerShown: false }} />
-                </Stack.Navigator>}
+            {user && !questionnaire?.complete && 
+            <Stack.Navigator>
+                <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>}
 
-                {!user && 
-                <Stack.Navigator>
-                    <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                </Stack.Navigator>}
+            {!user && 
+            <Stack.Navigator>
+                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>}
 
         </NavigationContainer>
     )

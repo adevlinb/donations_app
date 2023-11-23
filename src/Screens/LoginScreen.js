@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
-import Logo from "../../assets/mainLogo.png";
+import Logo from "../../assets/logos/mainLogo.png";
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import * as usersService from "../utilities/users-service";
+import * as usersAPI from "../utilities/users-api";
 import { useContext, } from 'react';
 import { User } from '../Context/UserContext';
 
 
 export default function LoginScreen() {
-    const { user, setUser } = useContext(User);
+    const { user, setUser, setQuestionnaire } = useContext(User);
 
     const login = {
         email: "",
@@ -31,6 +32,10 @@ export default function LoginScreen() {
     }
 
     async function handleLogin() {
+        const user = await usersService.login(credentials);
+        setUser(user);
+        const quest = await usersAPI.getQuestionnaire(user._id);
+        setQuestionnaire(quest)
         setLoginData(login);
     }
 
@@ -41,7 +46,7 @@ export default function LoginScreen() {
     async function handleSignUp() {
         const data = await usersService.signUp(signUpData);
         setSignUpData(signUp);
-        setUser(usersService.getUser);
+        setUser(usersService.getUser());
     }
 
     function handleSignUpChange(text, input) {

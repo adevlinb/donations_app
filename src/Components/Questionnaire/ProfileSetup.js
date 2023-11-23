@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native'
-import React from 'react'
-import smallLogo from "../../../assets/smallLogo.png"
+import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
+import React from 'react';
+import smallLogo from "../../../assets/logos/smallLogo.png";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileSetup({ user, nextPage, profileUpdate, setProfileUpdate }) {
@@ -8,7 +8,6 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
     function handleChange() {
         setProfileUpdate({ ...profileUpdate, [input]: text });
     }
-
 
     return (
         <View style={styles.mainContainer}>
@@ -18,8 +17,8 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
             </View>
             <View style={styles.middleContainer}>
                 <View style={{alignItems: "center"}}>
-                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user.name[0].toUpperCase()}{user.name.slice(1)}!</Text>
-                    <Text style={{ fontSize: 20}}>Let's setup your profile.</Text>
+                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.name[0].toUpperCase()}{user?.name.slice(1)}!</Text>
+                    <Text style={{ fontSize: 20 }}>Let's setup your profile.</Text>
                 </View>
                 <Pressable>
                     <View style={styles.iconsContainer}>

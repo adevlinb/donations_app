@@ -1,6 +1,5 @@
 import * as usersAPI from './users-api';
 import * as SecureStore from 'expo-secure-store';
-import base64 from 'react-native-base64'
 import {decode as atob, encode as btoa} from 'base-64'
 
 export async function signUp(userData) {

@@ -23,6 +23,7 @@ async function getUser(req, res) {
 
 async function getQuestionnaire(req, res) {
         try {
+            console.log(req.params.id, "userId")
             const quest = await Questionnaire.findOne({user: req.params.id});
             res.json(quest);
         } catch (err) {
