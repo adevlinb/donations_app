@@ -8,4 +8,6 @@ router.post('/', usersCtrl.create);
 
 router.get('/:id/questionnaire', usersCtrl.getQuestionnaire);
 
+router.post("/submitQuestionnaire", usersCtrl.submitQuestionaire)
+
 module.exports = router;

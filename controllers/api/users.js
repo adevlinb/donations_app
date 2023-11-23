@@ -6,9 +6,8 @@ const Questionnaire = require('../../models/questionnaire');
 module.exports = {
     create,
     getQuestionnaire,
+    submitQuestionnaire,
     login,
-    // checkToken,
-    // updateUser,
     getUser,
 };
 
@@ -25,6 +24,17 @@ async function getQuestionnaire(req, res) {
         try {
             console.log(req.params.id, "userId")
             const quest = await Questionnaire.findOne({user: req.params.id});
+            res.json(quest);
+        } catch (err) {
+            console.log(err)
+            res.status(500).json(err);
+        }
+}
+
+async function submitQuestionnaire(req, res) {
+        try {
+            console.log(req.user, "userId")
+            const quest = await Questionnaire.findOneAndUpdate({user: req.user._id}, req.body, {new: true});
             res.json(quest);
         } catch (err) {
             console.log(err)

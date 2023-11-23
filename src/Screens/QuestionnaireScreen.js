@@ -31,7 +31,13 @@ export default function QuestionnaireScreen() {
     }
 
     async function submitQuestionnaire() {
-        console.log("time to submit!")
+        // upload photo
+        // add photourl
+        // update profile
+        // update user state
+        updatedQuest.completed = true
+        const quest = await usersAPI.submitQuestionnaire(updatedQuest);
+        setQuestionnaire(quest);
     }
 
     if (!questionnaire) return null;

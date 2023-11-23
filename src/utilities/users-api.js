@@ -17,6 +17,11 @@ export function getQuestionnaire(userId) {
 	return sendRequest(`${BASE_URL}/${userId}/questionnaire`);
 }
 
+export function submitQuestionnaire(updatedQuest) {
+	return sendRequest(`${BASE_URL}/submitQuestionnaire`, "POST", updatedQuest);
+}
+
+
 
 
 
