@@ -3,11 +3,11 @@ import { getToken } from './users-service';
 export default async function sendRequest(url, method = 'GET', payload = null, payloadIsFormData = null) {
 	const options = { method };
 	if (payload) {
-		options.headers = payloadIsFormData ? {} : { 'Content-Type': 'application/json' };
+		options.headers = payloadIsFormData ? { "Content-Type": "multipart/form-data; " } : { 'Content-Type': 'application/json' };
 		options.body = payloadIsFormData ? payload : JSON.stringify(payload);
 	}
 
-	const token = getToken();
+	const token = await getToken();
 	if (token) {
 		options.headers = options.headers || {};
 		options.headers.Authorization = `Bearer ${token}`;

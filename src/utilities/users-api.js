@@ -13,12 +13,20 @@ export function getUser() {
 	return sendRequest(`${BASE_URL}/user`);
 }
 
+export function updateProfile(data) {
+	return sendRequest(`${BASE_URL}`, "PUT", data);
+}
+
 export function getQuestionnaire(userId) {
 	return sendRequest(`${BASE_URL}/${userId}/questionnaire`);
 }
 
 export function submitQuestionnaire(updatedQuest) {
 	return sendRequest(`${BASE_URL}/submitQuestionnaire`, "POST", updatedQuest);
+}
+
+export function uploadProfilePhoto(formData) {
+    return sendRequest(`${BASE_URL}/uploadProfilePhoto`, 'POST', formData, true);
 }
 
 

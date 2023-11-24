@@ -3,8 +3,12 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const {S3_REGION, S3_BUCKET, S3_BASE_URL} = process.env;
 
 module.exports = async function(file) {
+  // remove all problematic characters from title
+  const regex = new RegExp(/[^a-zA-Z0-9\:]*/g)   
+  file.originalname = file.originalname.replaceAll(regex, "");
+
   // Create an instance of the S3 client
-  const s3Client = new S3Client({ region: S3_REGION});
+  const s3Client = new S3Client({ region: S3_REGION });
   // s3's PutObjectCommand will expect an object with the following properties
   const s3Params = {
     Bucket: S3_BUCKET,

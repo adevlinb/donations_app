@@ -32,7 +32,7 @@ export default function LoginScreen() {
     }
 
     async function handleLogin() {
-        const user = await usersService.login(credentials);
+        const user = await usersService.login(loginData);
         setUser(user);
         const quest = await usersAPI.getQuestionnaire(user._id);
         setQuestionnaire(quest)

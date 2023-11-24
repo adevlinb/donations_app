@@ -7,6 +7,7 @@ const SALT_ROUNDS = 6;
 const userSchema = new Schema({
     name: { type: String, required: true },
     donationGoal: Number,
+    phoneNumber: Number,
     profilePic: String,
     email: {
       type: String,
@@ -20,7 +21,8 @@ const userSchema = new Schema({
       trim: true,
       minlength: 3,
       required: true
-    }
+    },
+    mediaGalleryPermission: { type: Boolean, default: false },
 }, {
     timestamps: true,
     toJSON: {

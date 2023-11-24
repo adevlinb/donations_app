@@ -17,13 +17,13 @@ export default function StackNavigation() {
     return (
         <NavigationContainer>
 
-            {user && questionnaire?.complete && 
+            {user && questionnaire?.questionsComplete && 
             <Stack.Navigator>
                 <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
             }
 
-            {user && !questionnaire?.complete && 
+            {user && !questionnaire?.questionsComplete && 
             <Stack.Navigator>
                 <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} options={{ headerShown: false }} />
             </Stack.Navigator>}

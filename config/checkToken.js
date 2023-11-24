@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = async function (req, res, next) {
     // Check for the token being sent in a header or as a query parameter
+
     let token = req.get('Authorization') || req.query.token;
     if (token) {
         // Remove the 'Bearer ' if it was included in the token header

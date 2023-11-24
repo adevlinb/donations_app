@@ -1,13 +1,45 @@
 import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import smallLogo from "../../../assets/logos/smallLogo.png";
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from "expo-image-picker";
 
-export default function ProfileSetup({ user, nextPage, profileUpdate, setProfileUpdate }) {
+export default function ProfileSetup({ user, nextPage, profileUpdate, setProfileUpdate, hasGalleryPermission, setHasGalleryPermission, image, setImage }) {
 
-    function handleChange() {
-        setProfileUpdate({ ...profileUpdate, [input]: text });
+    function handleChange(text, input) {
+        if (input === "phoneNumber") {
+            textNums = text.replace(/[^0-9\\.]+/g, '');
+            setProfileUpdate({ ...profileUpdate, [input]: textNums });
+        }
+        if (input === "donationGoal") {
+            textNums = text.replace(/[^0-9\\.]+/g, '');
+            setProfileUpdate({ ...profileUpdate, [input]: text });
+        }
+
     }
+
+    useEffect(() => {
+        if (!user?.mediaGalleryPermission) {
+            (async () => {
+                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                setHasGalleryPermission(galleryStatus.status === "granted");
+            })()
+        }
+    }, [])
+
+    async function pickImage() {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4,3],
+            quality: 1,
+        });
+
+        if (result?.canceled || result?.cancelled) setImage(null)
+        else setImage(result?.assets[0])
+        
+    }
+
 
     return (
         <View style={styles.mainContainer}>
@@ -20,19 +52,23 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
                     <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.name[0].toUpperCase()}{user?.name.slice(1)}!</Text>
                     <Text style={{ fontSize: 20 }}>Let's setup your profile.</Text>
                 </View>
-                <Pressable>
-                    <View style={styles.iconsContainer}>
-                        <Ionicons style={styles.addSign} name="ios-add-circle" size={27} color="blue" />
-                        <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
-                        <View style={styles.iconBackground}></View>
-                    </View>
-                    <Text style={{color:"blue"}} >Upload Your Profile Picture</Text>
+                <Pressable onPress={pickImage}>
+                    {image ? 
+                        <Image source={{uri: image.uri}} style={{ height: 0.08 * image.height, width: 0.08 * image.width, margin: 10, alignSelf: "center" }} />
+                    :
+                        <View style={styles.iconsContainer}>
+                            <Ionicons style={styles.addSign} name="ios-add-circle" size={27} color="blue" />
+                            <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
+                            <View style={styles.iconBackground}></View>
+                        </View>
+                    }
+                    <Text style={{color:"blue", alignSelf: "center"}} >{image ? "Choose a different photo?" : "Upload Your Profile Picture"}</Text>
                 </Pressable>
                 <View style={styles.inputContainer}>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number:</Text>
-                    <TextInput style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" ></TextInput>
+                    <TextInput value={`${profileUpdate.phoneNumber.length > 0 ? "(" : ""}${profileUpdate.phoneNumber.slice(0,3)}${profileUpdate.phoneNumber.length > 3 ? ") " : ""}${profileUpdate.phoneNumber.slice(3,6)}${profileUpdate.phoneNumber.length >= 7 ? "-" : ""}${profileUpdate.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Donation Goal:</Text>
-                    <TextInput style={styles.textInputs} placeholder='$0.00'></TextInput>
+                    <TextInput value={profileUpdate.donationGoal} style={styles.textInputs} placeholder='$0.00' onChangeText={(text) => handleChange(text, "donationGoal")}></TextInput>
                 </View>
             </View>
             <View style={styles.bottomContainer}>
