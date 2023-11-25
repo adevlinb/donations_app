@@ -4,8 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useContext } from 'react';
 import { User } from '../Context/UserContext';
-import { Pressable } from 'react-native';
-
+import CustomDrawerItems from './CustomDrawerItems';
+import { Entypo } from '@expo/vector-icons';
+import { View } from 'react-native';
 
 // SCREENS
 import LoginScreen from '../Screens/LoginScreen';
@@ -20,32 +21,27 @@ import ContactScreen from '../Screens/ContactScreen';
 import CartScreen from '../Screens/CartScreen';
 
 // APIS
-import * as usersService from "../utilities/users-service";
 
 export default function StackNavigation() {
     const Stack = createNativeStackNavigator();
     const Drawer = createDrawerNavigator();
     const { user, setUser, questionnaire } = useContext(User);
 
-    function logout() {
-        usersService.logOut();
-        setUser(null);
-    }
-
     return (
         <NavigationContainer>
 
             {user && questionnaire?.questionsComplete && 
-            <Drawer.Navigator initialRouteName="Home">
-                <Drawer.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="Search" component={SearchScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="ManageProfile" component={ManageProfileScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="MyDonations" component={MyDonationsScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="Favorites" component={FavoritesScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="Contact" component={ContactScreen} options={{ headerShown: false }}/>
-                <Drawer.Screen name="Cart" component={CartScreen} options={{ headerShown: false }}/>
+            <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: "#C6E5E3" }, drawerLabelStyle: {fontWeight: 700, color: "black" }, drawerItemStyle: { marginTop: 0, marginBottom: 0 }}} drawerContent={(props) => <CustomDrawerItems {...props}/>}>
+                <Drawer.Screen name="Home" component={HomeScreen} options={{ headerShown: false, title: "Home" }}/>
+                <Drawer.Screen name="Search" component={SearchScreen} options={{ headerShown: false, title: "Search" }}/>
+                <Drawer.Screen name="ManageProfile" component={ManageProfileScreen} options={{ headerShown: false, title: "Manage Profile" }} />
+                <Drawer.Screen name="MyDonations" component={MyDonationsScreen} options={{ headerShown: false, title: "My Donations" }}/>
+                <Drawer.Screen name="Favorites" component={FavoritesScreen} options={{ headerShown: false, title: "Favorites" }}/>
+                <Drawer.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false, title: "Settings" }}/>
+                <Drawer.Screen name="Contact" component={ContactScreen} options={{ headerShown: false, title: "Contact Us" }}/>
+                <Drawer.Screen name="Cart" component={CartScreen} options={{ headerShown: false, title: "My Cart", drawerLabelStyle: {fontWeight: 700, color: "black", marginHorizontal: 0, margin: 0}, drawerIcon: () => <View style={{marginRight: -25}}><Entypo name="shopping-cart" size={24} color="black" /></View>}}  />
             </Drawer.Navigator>}
+ 
 
             {user && !questionnaire?.questionsComplete && 
             <Stack.Navigator>

@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import StackNavigator from "../Navigation/StackNavigation.js";
 import { registerRootComponent } from 'expo';
 import { UserContext } from "../Context/UserContext.js";

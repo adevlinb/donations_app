@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: 'stretch',
         gap: 15,
-
     },
     registerButton: {
         padding: 20,
