@@ -19,6 +19,10 @@ import FavoritesScreen from '../Screens/FavoritesScreen';
 import SettingsScreen from '../Screens/SettingsScreen';
 import ContactScreen from '../Screens/ContactScreen';
 import CartScreen from '../Screens/CartScreen';
+import AboutScreen from '../Screens/About';
+import TermsOfUseScreen from '../Screens/TermsOfUse';
+import PrivacyScreen from '../Screens/Privacy';
+import HelpScreen from '../Screens/Help';
 
 // APIS
 
@@ -31,7 +35,7 @@ export default function StackNavigation() {
         <NavigationContainer>
 
             {user && questionnaire?.questionsComplete && 
-            <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: "#C6E5E3" }, drawerLabelStyle: {fontWeight: 700, color: "black" }, drawerItemStyle: { marginTop: 0, marginBottom: 0 }}} drawerContent={(props) => <CustomDrawerItems {...props}/>}>
+            <Drawer.Navigator initialRouteName="Home" screenOptions={{ drawerStyle: { backgroundColor: "#C6E5E3" }}} drawerContent={(props) => <CustomDrawerItems {...props}/>}>
                 <Drawer.Screen name="Home" component={HomeScreen} options={{ headerShown: false, title: "Home" }}/>
                 <Drawer.Screen name="Search" component={SearchScreen} options={{ headerShown: false, title: "Search" }}/>
                 <Drawer.Screen name="ManageProfile" component={ManageProfileScreen} options={{ headerShown: false, title: "Manage Profile" }} />
@@ -39,7 +43,11 @@ export default function StackNavigation() {
                 <Drawer.Screen name="Favorites" component={FavoritesScreen} options={{ headerShown: false, title: "Favorites" }}/>
                 <Drawer.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false, title: "Settings" }}/>
                 <Drawer.Screen name="Contact" component={ContactScreen} options={{ headerShown: false, title: "Contact Us" }}/>
-                <Drawer.Screen name="Cart" component={CartScreen} options={{ headerShown: false, title: "My Cart", drawerLabelStyle: {fontWeight: 700, color: "black", marginHorizontal: 0, margin: 0}, drawerIcon: () => <View style={{marginRight: -25}}><Entypo name="shopping-cart" size={24} color="black" /></View>}}  />
+                <Drawer.Screen name="Cart" component={CartScreen} options={{ headerShown: false, title: "My Cart" }}/>
+                <Drawer.Screen name="About" component={AboutScreen} options={{ headerShown: false, title: "About" }}/>
+                <Drawer.Screen name="TermsOfUse" component={TermsOfUseScreen} options={{ headerShown: false, title: "Terms of Use" }}/>
+                <Drawer.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false, title: "Privacy" }}/>
+                <Drawer.Screen name="Help" component={HelpScreen} options={{ headerShown: false, title: "Help/FAQ" }}/>
             </Drawer.Navigator>}
  
 

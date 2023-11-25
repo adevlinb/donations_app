@@ -1,9 +1,10 @@
 // IMPORTS
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useContext } from 'react';
 import { User } from '../Context/UserContext';
-import changeAccountIcon from "../../assets/changeAccount/chanceAccountIcon.png"
+import changeAccountIcon from "../../assets/logos/changeAccountIcon.png"
+import { Entypo } from '@expo/vector-icons';
 
 // SCREENS
 
@@ -21,12 +22,17 @@ export default function CustomDrawerItems(props) {
     return (
         <DrawerContentScrollView style={styles.mainContainer} contentContainerStyle={styles.contentMainContainer} {...props}>
             <View style={styles.userInfoContainer}>
-                <View style={styles.picContainer}>
-                    <Image source={{ uri: user.profilePic}} style={styles.profilePic}/>
-                </View>
+                <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
                 <Text style={styles.userName}>{user.name}</Text>
             </View>
-            <DrawerItemList labelStyle={{color: 'red'}} {...props} />
+            <DrawerItem label="Home" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Home")}/>
+            <DrawerItem label="Search" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Search")}/>
+            <DrawerItem label="ManageProfile" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("ManageProfile")}/>
+            <DrawerItem label="MyDonations" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("MyDonations")}/>
+            <DrawerItem label="Favorites" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Favorites")}/>
+            <DrawerItem label="Settings" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Settings")}/>
+            <DrawerItem label="Contact" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Contact")}/>
+            <DrawerItem label="Cart" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Cart")} icon={ () => <View style={{marginRight: -25}}><Entypo name="shopping-cart" size={24} color="black" /></View>} />
             <View style={styles.bottomContainer}>
                 <Pressable style={styles.logoutButton}><Text style={styles.logoutButtonText}>Logout</Text></Pressable>
                 <Pressable style={styles.changeAccountContainer}><Image source={changeAccountIcon}/><Text>Change Account</Text></Pressable>
@@ -56,6 +62,14 @@ const styles = StyleSheet.create({
     },
     userName: {
         textDecorationLine: 'underline',
+    },
+    itemLabels: {
+        fontWeight: 700, 
+        color: "black"
+    },
+    itemStyle: {
+        marginTop: 0, 
+        marginBottom: 0,
     },
     bottomContainer: {
         justifyContent: "space-evenly",

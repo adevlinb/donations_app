@@ -1,8 +1,9 @@
 // IMPORTS
-import { StyleSheet, Text, SafeAreaView, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, SafeAreaView, View } from 'react-native'
 
 // COMPONENTS
 import Header from '../Components/Header';
+import BottomNav from '../Navigation/BottomNav';
 
 // APIS
 
@@ -10,24 +11,28 @@ import Header from '../Components/Header';
 export default function HomeScreen({ navigation }) {
 
     return (
-        <ScrollView>
-            <SafeAreaView style={styles.mainView}>
-                <Header navigation={navigation} />
-                <View style={styles.statsContainer}>
-                    <View style={styles.stats}>
-                        <Text>Stats</Text>
-                    </View>
-                    <View style={styles.refresh}>
-                        <Text>SubHeader and refresh</Text>
-                    </View>
+        <SafeAreaView style={styles.mainContainer} contentContainerStyle={styles.mainContentContainer}>
+            <Header navigation={navigation} />
+            <View style={styles.statsContainer}>
+                <View style={styles.stats}>
+                    <Text>Stats</Text>
                 </View>
-                <View style={styles.bottomNav}><Text>Bottom Nav</Text></View>
-            </SafeAreaView>
-        </ScrollView>
+                <View style={styles.refresh}>
+                    <Text>Home Screen</Text>
+                </View>
+            </View>
+            <BottomNav navigation={navigation}/>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    mainContentContainer: {
+        // flexGrow: 1,
+    },
+    mainContainer: {
+        flexGrow: 1
+    },
     mainView: {
         padding: 5,
         height: "100%",
@@ -62,11 +67,5 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 50
     },
-    bottomNav: {
-        position: "sticky",
-        bottom: 0,
-        backgroundColor: "red",
-        height: "10%"
-    }
 
 })
