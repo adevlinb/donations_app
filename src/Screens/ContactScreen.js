@@ -1,6 +1,6 @@
 // IMPORTS
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { User } from '../Context/UserContext';
 
 // COMPONENTS
@@ -12,6 +12,25 @@ import BottomNav from '../Navigation/BottomNav';
 
 export default function ContactScreen({ navigation }) {
 	const { user } = useContext(User);
+	const [formData, setFormData] = useState({
+		firstName: "",
+		lastName: "",
+		email: "",
+		phoneNumber: "",
+		message: "",
+	})
+
+	function handleChange(text, input) {
+        if (input === "phoneNumber") {
+            textNums = text.replace(/[^0-9\\.]+/g, '');
+            return setFormData({ ...formData, [input]: textNums });
+        }
+		return setFormData({ ...formData, [input]: text });
+    }
+
+	async function handleSubmitMessage() {
+		
+	}
 
 
 	return (
@@ -23,30 +42,30 @@ export default function ContactScreen({ navigation }) {
             </View>
 			<View style={styles.mainInputContainer}>
 				<View style={styles.nameInputContainer}>
-					<View style={styles.inputContainer}>
+					<View style={styles.inputContainerSide}>
 						<Text style={styles.placeholderText}>First Name</Text>
-						<TextInput></TextInput>
+						<TextInput value={formData.firstName} onChangeText={(text) => handleChange(text, "firstName")}></TextInput>
 					</View>
-					<View style={styles.inputContainer}>
+					<View style={styles.inputContainerSide}>
 						<Text style={styles.placeholderText}>Last Name</Text>
-						<TextInput></TextInput>
+						<TextInput value={formData.lastName} onChangeText={(text) => handleChange(text, "lastName")}></TextInput>
 					</View>	
 				</View>
 				<View style={styles.inputContainer}>
 					<Text style={styles.placeholderText}>Email</Text>
-					<TextInput inputMode="email" placeholder="example@example.com"></TextInput>
+					<TextInput value={formData.email} inputMode="email" placeholder="example@example.com" onChangeText={(text) => handleChange(text, "email")}></TextInput>
 				</View>
 				<View style={styles.inputContainer}>
 					<Text style={styles.placeholderText}>Phone Number</Text>
-					<TextInput inputMode='tel' placeholder="(000) 000-0000"></TextInput>
+					<TextInput value={`${formData.phoneNumber.length > 0 ? "(" : ""}${formData.phoneNumber.slice(0,3)}${formData.phoneNumber.length > 3 ? ") " : ""}${formData.phoneNumber.slice(3,6)}${formData.phoneNumber.length >= 7 ? "-" : ""}${formData.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
 				</View>
 				<View style={styles.textBox}>
 					<Text style={styles.placeholderText}>Types your message here...</Text>
-					<TextInput style={styles.textBoxInput} multiline numberOfLines={4}></TextInput>
+					<TextInput value={formData.message}  style={styles.textBoxInput} multiline numberOfLines={4} onChangeText={(text) => handleChange(text, "message")}></TextInput>
 				</View>
 			</View>
 			<View style={styles.submitContainer}>
-				<Pressable style={styles.submitButton}><Text style={{color: "white"}}>Submit Button</Text></Pressable>
+				<Pressable style={styles.submitButton} onPress={handleSubmitMessage}><Text style={{color: "white"}}>Submit</Text></Pressable>
 			</View>
             <BottomNav navigation={navigation}/>
         </SafeAreaView>
@@ -84,6 +103,7 @@ const styles = StyleSheet.create({
 	},
 	nameInputContainer: {
 		flexDirection: "row",
+		justifyContent: "space-between"
 	},
 	inputContainer: {
         borderStyle: "solid",
@@ -93,7 +113,15 @@ const styles = StyleSheet.create({
 		height: 40,
 		paddingHorizontal: 5,
 		justifyContent: "center",
-
+	},
+	inputContainerSide: {
+        borderStyle: "solid",
+        borderWidth: 1.5,
+		borderColor: "#B0B0B0",
+		width: "48%",
+		height: 40,
+		paddingHorizontal: 5,
+		justifyContent: "center",
 	},
 	placeholderText: {
 		color: "#B0B0B0",

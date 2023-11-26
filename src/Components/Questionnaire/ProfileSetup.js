@@ -15,7 +15,6 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
             textNums = text.replace(/[^0-9\\.]+/g, '');
             setProfileUpdate({ ...profileUpdate, [input]: text });
         }
-
     }
 
     useEffect(() => {
