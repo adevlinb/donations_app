@@ -12,11 +12,15 @@ import { Entypo } from '@expo/vector-icons';
 import * as usersService from "../utilities/users-service";
 
 export default function CustomDrawerItems(props) {
-    const { user } = useContext(User);
+    const { user, setUser } = useContext(User);
 
     function logout() {
         usersService.logOut();
         setUser(null);
+    }
+
+    function changeAccount() {
+
     }
 
     return (
@@ -34,8 +38,8 @@ export default function CustomDrawerItems(props) {
             <DrawerItem label="Contact" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Contact")}/>
             <DrawerItem label="Cart" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Cart")} icon={ () => <View style={{marginRight: -25}}><Entypo name="shopping-cart" size={24} color="black" /></View>} />
             <View style={styles.bottomContainer}>
-                <Pressable style={styles.logoutButton}><Text style={styles.logoutButtonText}>Logout</Text></Pressable>
-                <Pressable style={styles.changeAccountContainer}><Image source={changeAccountIcon}/><Text>Change Account</Text></Pressable>
+                <Pressable onPress={logout} style={styles.logoutButton}><Text style={styles.logoutButtonText}>Logout</Text></Pressable>
+                <Pressable onPress={changeAccount} style={styles.changeAccountContainer}><Image source={changeAccountIcon}/><Text>Change Account</Text></Pressable>
             </View>
         </DrawerContentScrollView>
     )
