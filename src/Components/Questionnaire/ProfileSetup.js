@@ -65,7 +65,7 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
                 </Pressable>
                 <View style={styles.inputContainer}>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number:</Text>
-                    <TextInput value={`${profileUpdate.phoneNumber.length > 0 ? "(" : ""}${profileUpdate.phoneNumber.slice(0,3)}${profileUpdate.phoneNumber.length > 3 ? ") " : ""}${profileUpdate.phoneNumber.slice(3,6)}${profileUpdate.phoneNumber.length >= 7 ? "-" : ""}${profileUpdate.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
+                    <TextInput maxLength={14} value={`${profileUpdate.phoneNumber.length > 0 ? "(" : ""}${profileUpdate.phoneNumber.slice(0,3)}${profileUpdate.phoneNumber.length > 3 ? ") " : ""}${profileUpdate.phoneNumber.slice(3,6)}${profileUpdate.phoneNumber.length >= 7 ? "-" : ""}${profileUpdate.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Donation Goal:</Text>
                     <TextInput value={profileUpdate.donationGoal} style={styles.textInputs} placeholder='$0.00' onChangeText={(text) => handleChange(text, "donationGoal")}></TextInput>
                 </View>
