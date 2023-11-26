@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 	},
 	inputContainer: {
         borderStyle: "solid",
-        borderWidth: 1,
+        borderWidth: 1.5,
 		borderColor: "#B0B0B0",
 		width: "100%",
 		height: 40,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 	textBox: {
 		flexGrow: 1,
 		borderStyle: "solid",
-        borderWidth: 1,
+        borderWidth: 1.5,
 		borderColor: "#B0B0B0",
 		width: "100%",
 		height: 40,
