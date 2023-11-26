@@ -38,12 +38,6 @@ export default function QuestionnaireScreen() {
 
         if (image) {
             const imageData = new FormData();
-            // imageData.append('file', {
-            //     name: image.name,
-            //     type: image.type,
-            //     photo: image.uri,
-            //     uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-            // });
             imageData.append('photo', {
                 name: image.fileName,
                 type: image.type,
@@ -65,9 +59,7 @@ export default function QuestionnaireScreen() {
         profileUpdate.donationGoal = parseInt(profileUpdate.donationGoal)
         const updatedProfile = await usersAPI.updateProfile(profileUpdate);
         setUser(updatedProfile);
-        usersService.updateUserStorage(updatedProfile);
-
-        // need to update token in local Storage!!
+        return usersService.updateUserStorage(updatedProfile);
     }
 
     if (!questionnaire) return null;

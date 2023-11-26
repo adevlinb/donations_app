@@ -25,7 +25,6 @@ async function getUser(req, res) {
 
 async function getQuestionnaire(req, res) {
     try {
-        console.log(req.params.id, "userId")
         const quest = await Questionnaire.findOne({ user: req.params.id });
         res.json(quest);
     } catch (err) {
@@ -36,7 +35,6 @@ async function getQuestionnaire(req, res) {
 
 async function submitQuestionnaire(req, res) {
     try {
-        console.log(req.user, "userId")
         const quest = await Questionnaire.findOneAndUpdate({ user: req.user._id }, req.body, { new: true });
         res.json(quest);
     } catch (err) {
@@ -59,11 +57,8 @@ async function create(req, res) {
 
 async function login(req, res) {
     try {
-        console.log("loggin in")
-        // Find the user by their email address
         const user = await User.findOne({ email: req.body.email });
         if (!user) throw new Error();
-        // Check if the password matches
         const match = await bcrypt.compare(req.body.password, user.password);
         if (!match) throw new Error();
         res.json(createJWT(user));
