@@ -29,7 +29,7 @@ export default function ContactScreen({ navigation }) {
     }
 
 	async function handleSubmitMessage() {
-		
+		navigation.navigate("ThankYou")
 	}
 
 

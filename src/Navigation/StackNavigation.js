@@ -23,6 +23,7 @@ import AboutScreen from '../Screens/About';
 import TermsOfUseScreen from '../Screens/TermsOfUse';
 import PrivacyScreen from '../Screens/Privacy';
 import HelpScreen from '../Screens/Help';
+import ThankYouScreen from '../Screens/ThankYouScreen';
 
 // APIS
 
@@ -48,6 +49,7 @@ export default function StackNavigation() {
                 <Drawer.Screen name="TermsOfUse" component={TermsOfUseScreen} options={{ headerShown: false, title: "Terms of Use" }}/>
                 <Drawer.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false, title: "Privacy" }}/>
                 <Drawer.Screen name="Help" component={HelpScreen} options={{ headerShown: false, title: "Help/FAQ" }}/>
+                <Drawer.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false, title: "Thank You" }}/>
             </Drawer.Navigator>}
  
 
