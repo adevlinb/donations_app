@@ -24,6 +24,10 @@ import TermsOfUseScreen from '../Screens/TermsOfUse';
 import PrivacyScreen from '../Screens/Privacy';
 import HelpScreen from '../Screens/Help';
 import ThankYouScreen from '../Screens/ThankYouScreen';
+import NotificationsSetScreen from '../Screens/NotificationsSetScreen';
+import LocationsSetScreen from '../Screens/LocationsSetScreen';
+import SiriSetScreen from '../Screens/SiriSetScreen';
+import LanguageSetScreen from '../Screens/LanguageSetScreen';
 
 // APIS
 
@@ -50,6 +54,10 @@ export default function StackNavigation() {
                 <Drawer.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false, title: "Privacy" }}/>
                 <Drawer.Screen name="Help" component={HelpScreen} options={{ headerShown: false, title: "Help/FAQ" }}/>
                 <Drawer.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false, title: "Thank You" }}/>
+                <Drawer.Screen name="NotificationSet" component={NotificationsSetScreen} options={{ headerShown: false, title: "Notification Settings" }}/>
+                <Drawer.Screen name="LocationSet" component={LocationsSetScreen} options={{ headerShown: false, title: "Location Settings" }}/>
+                <Drawer.Screen name="SiriSet" component={SiriSetScreen} options={{ headerShown: false, title: "Siri Settings" }}/>
+                <Drawer.Screen name="LanguageSet" component={LanguageSetScreen} options={{ headerShown: false, title: "Language Settings" }}/>
             </Drawer.Navigator>}
  
 

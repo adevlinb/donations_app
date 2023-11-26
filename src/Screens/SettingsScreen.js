@@ -6,6 +6,7 @@ import { User } from '../Context/UserContext';
 // COMPONENTS
 import Header from '../Components/Header'
 import BottomNav from '../Navigation/BottomNav'
+import SettingsNav from '../Navigation/SettingsNav';
 
 // APIS
 
@@ -18,17 +19,13 @@ export default function SettingsScreen({ navigation }) {
         <SafeAreaView style={styles.mainContainer}>
             <Header navigation={navigation} />
 			<View style={styles.userInfoContainer}>
-                <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
-                <Text style={styles.userName}>{user.name}</Text>
-            </View>
-			<View>
-				<Text>Settings</Text>
-				<Pressable><Text>Notifications</Text></Pressable>
-				<Pressable><Text>Location Services</Text></Pressable>
-				<Pressable><Text>Siri Settings</Text></Pressable>
-				<Pressable><Text>Language</Text></Pressable>
+				<View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
+				<Text style={styles.userName}>{user.name}</Text>
 			</View>
-
+			<View style={styles.settingsContainer}>
+				<Text style={styles.labelText}>Settings:</Text>
+				<SettingsNav navigation={navigation}/>
+			</View>
             <BottomNav navigation={navigation}/>
         </SafeAreaView>
     )
@@ -36,7 +33,8 @@ export default function SettingsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flexGrow: 1
+        flexGrow: 1,
+		padding: 15,
     },
 	userInfoContainer: {
         alignItems: "center",
@@ -56,5 +54,13 @@ const styles = StyleSheet.create({
     userName: {
         textDecorationLine: 'underline',
     },
+	settingsContainer: {
+		padding: 15
+	},
+	labelText: {
+		fontWeight: "bold",
+		fontSize: 20,
+	},
+
 
 })

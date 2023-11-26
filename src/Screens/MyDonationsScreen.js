@@ -1,5 +1,8 @@
 // IMPORTS
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native'
+import { useContext, useState, useEffect } from 'react';
+import { User } from '../Context/UserContext';
+import NoFavorites from "../../assets/no-favorites.png";
 
 // COMPONENTS
 import Header from '../Components/Header';
@@ -10,62 +13,77 @@ import BottomNav from '../Navigation/BottomNav';
 
 
 export default function MyDonationsScreen({ navigation }) {
+	const { user } = useContext(User);
+	const [activeDonations, setActiveDonations] = useState([])
+	const [pastDonations, setPastDonations] = useState([])
+
+	useEffect(() => {
+		async function getDonations() {
+			// call function to get donations
+			// setUserFavorites(results);
+		}
+		getDonations()
+	}, [])
+
 	return (
-        <SafeAreaView style={styles.mainContainer} contentContainerStyle={styles.mainContentContainer}>
+        <SafeAreaView style={styles.mainContainer}>
             <Header navigation={navigation} />
-            <View style={styles.statsContainer}>
-                <View style={styles.stats}>
-                    <Text>Stats</Text>
-                </View>
-                <View style={styles.refresh}>
-                    <Text>My Donations Screen</Text>
-                </View>
+			<View style={styles.userInfoContainer}>
+                <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
+                <Text style={styles.userName}>{user.name}</Text>
             </View>
+			<View style={styles.bodyContainer}>
+				{activeDonations.length > 0 && pastDonations.length > 0 ? 
+					<>
+						<Text>My Active Donations:</Text>
+						<Text>Show Active Donations here...</Text>
+						<Text>My Past Donations:</Text>
+						<Text>Show Past Donations here...</Text>
+					</>
+				:
+					<>
+						<Text style={{fontWeight: 500, fontSize: 15}}>Oops! There’s nothing here.</Text> 
+						<Text style={{fontWeight: 500, fontSize: 15}}>You have not made any donations, yet!</Text>
+						<Image source={NoFavorites} style={styles.noFavImage}/>
+					</>
+				}
+			</View>
             <BottomNav navigation={navigation}/>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    mainContentContainer: {
-        // flexGrow: 1,
-    },
     mainContainer: {
         flexGrow: 1
     },
-    mainView: {
-        padding: 5,
-        height: "100%",
+	userInfoContainer: {
         alignItems: "center",
-        paddingTop: 50
+        justifyContent: "center",
+        height: "25%",
     },
-    statsContainer: {
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        borderRadius: 5
+    picContainer: {
+        backgroundColor: "red",
+        borderRadius: "50%",
+        overflow: "hidden",
+        margin: 10
     },
-    stats: {
-        flexDirection: "row",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        padding: 10,
-        zIndex: 5,
-        height: 60,
+    profilePic: {
+        width: 90,
+        height: 90
     },
-    refresh: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
-        padding: 10,
-        height: 60,
-        backgroundColor: "#9DBAB9",
-        zIndex: 3,
-        position: "absolute",
-        top: 50
+    userName: {
+        textDecorationLine: 'underline',
     },
+	bodyContainer: {
+		alignItems: "center",
+		flexGrow: 1,
+		width: "100%"
+	},
+	noFavImage: {
+		width: "100%",
+		height: 300,
+		resizeMode: "contain",
+	}
 
 })
