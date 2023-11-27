@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Image, Pressable, TextInput } fro
 import { useContext, useState, useEffect } from 'react';
 import { User } from '../Context/UserContext';
 import * as ImagePicker from "expo-image-picker";
+import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 
 // COMPONENTS
 import Header from '../Components/Header'
@@ -84,6 +85,16 @@ export default function ManageProfileScreen({ navigation }) {
             <Header navigation={navigation} />
 			<View style={styles.mainContainer}>
 				<UserInfo />
+				<View style={styles.statsContainer}>
+					<View style={{ flexDirection: "row", alignItems: "center"}}>
+						<Entypo name="star" size={24} color="#C13584" />
+						<Text>Donations?</Text>
+					</View>
+					<View style={{ flexDirection: "row", alignItems: "center"}}>
+					<FontAwesome5 name="user-check" size={24} color="#C13584" />
+						<Text>Verified?</Text>
+					</View>
+				</View>
 				<View style={styles.mainInputContainer}>
 					<View style={styles.nextLayerContainer}>
 						<View style={editFirstName ? styles.inputContainerActive : styles.inputContainer}>
@@ -109,7 +120,7 @@ export default function ManageProfileScreen({ navigation }) {
 					<View style={styles.nextLayerContainer}>
 						<View style={editPhoneNumber ? styles.inputContainerActive : styles.inputContainer}>
 							<Text style={styles.placeholderText}>Phone Number</Text>
-							{editPhoneNumber ? <TextInput maxLength={14} value={formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text style={styles.textInputs}>{formatPhoneNumber(formData.phoneNumber)}</Text>}
+							{editPhoneNumber ? <TextInput maxLength={14} value={formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text style={styles.textInputs}>{formData.phoneNumber}</Text>}
 						</View>
 						<Pressable onPress={() => setEditPhoneNumber(!editPhoneNumber)}><Text style={editPhoneNumber ? styles.cancel : styles.edit }>{editPhoneNumber ? "cancel" : "edit"}</Text></Pressable>
 					</View>
@@ -125,10 +136,14 @@ export default function ManageProfileScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        padding: 15
+		flexGrow: 1,
+        padding: 15,
+		justifyContent: "space-between"
     },
+	statsContainer: {
+
+	},
 	mainInputContainer: {
-		height: "40%",
 		justifyContent: "space-evenly",
 	},
 	nextLayerContainer: {

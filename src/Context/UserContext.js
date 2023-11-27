@@ -14,7 +14,7 @@ const UserContext = ({children}) => {
                 const results = await UsersService.getUser();
                 setUser(results);
             }
-            if (user) {
+            if (user && !questionnaire) {
                 const quest = await usersAPI.getQuestionnaire(user._id);
                 setQuestionnaire(quest)
             }
