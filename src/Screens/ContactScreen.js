@@ -1,11 +1,12 @@
 // IMPORTS
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Pressable } from 'react-native'
 import { useContext, useState } from 'react';
 import { User } from '../Context/UserContext';
 
 // COMPONENTS
 import Header from '../Components/Header';
 import BottomNav from '../Navigation/BottomNav';
+import UserInfo from '../Components/UserInfo';
 
 // APIS
 
@@ -36,10 +37,7 @@ export default function ContactScreen({ navigation }) {
 	return (
         <SafeAreaView style={styles.mainContainer}>
             <Header navigation={navigation} />
-			<View style={styles.userInfoContainer}>
-                <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
-                <Text style={styles.userName}>{user.name}</Text>
-            </View>
+			<UserInfo />
 			<View style={styles.mainInputContainer}>
 				<View style={styles.nameInputContainer}>
 					<View style={styles.inputContainerSide}>
@@ -75,24 +73,6 @@ export default function ContactScreen({ navigation }) {
 const styles = StyleSheet.create({
     mainContainer: {
         flexGrow: 1
-    },
-	userInfoContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        height: "25%",
-    },
-    picContainer: {
-        backgroundColor: "red",
-        borderRadius: "50%",
-        overflow: "hidden",
-        margin: 10
-    },
-    profilePic: {
-        width: 90,
-        height: 90
-    },
-    userName: {
-        textDecorationLine: 'underline',
     },
 	mainInputContainer: {
 		width: "100%",

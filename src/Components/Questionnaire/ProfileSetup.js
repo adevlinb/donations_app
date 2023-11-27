@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import smallLogo from "../../../assets/logos/smallLogo.png";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
@@ -48,7 +48,7 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
             </View>
             <View style={styles.middleContainer}>
                 <View style={{alignItems: "center"}}>
-                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.name[0].toUpperCase()}{user?.name.slice(1)}!</Text>
+                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.firstName[0].toUpperCase()}{user?.firstName.slice(1)} {user?.lastName[0].toUpperCase()}{user?.lastName.slice(1)}!</Text>
                     <Text style={{ fontSize: 20 }}>Let's setup your profile.</Text>
                 </View>
                 <Pressable onPress={pickImage}>

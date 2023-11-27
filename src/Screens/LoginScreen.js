@@ -1,12 +1,15 @@
+// IMPORTS
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, Pressable } from 'react-native'
 import Logo from "../../assets/logos/mainLogo.png";
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import * as usersService from "../utilities/users-service";
-import * as usersAPI from "../utilities/users-api";
-import { useContext, } from 'react';
+import { useContext, useState } from 'react';
 import { User } from '../Context/UserContext';
 
+// COMPONENTS
+
+// APIS
+import * as usersService from "../utilities/users-service";
+import * as usersAPI from "../utilities/users-api";
 
 export default function LoginScreen() {
     const { user, setUser, setQuestionnaire } = useContext(User);
@@ -17,7 +20,8 @@ export default function LoginScreen() {
     }
     const signUp = {
         email: "",
-        name: "",
+        firstName: "",
+        lastName: "",
         password: ""
     }
 
@@ -47,6 +51,8 @@ export default function LoginScreen() {
         const data = await usersService.signUp(signUpData);
         setSignUpData(signUp);
         setUser(usersService.getUser());
+        const quest = await usersAPI.getQuestionnaire(user._id);
+        setQuestionnaire(quest)
     }
 
     function handleSignUpChange(text, input) {
@@ -91,7 +97,8 @@ export default function LoginScreen() {
                                 <View style={styles.inputContainer}>
                                     <View style={styles.textInputContainer}>
                                         <TextInput value={signUpData.email} onChangeText={(text) => handleSignUpChange(text, "email")} style={styles.registerInputs} placeholder='email' autoCapitalize="none"></TextInput>
-                                        <TextInput value={signUpData.name} onChangeText={(text) => handleSignUpChange(text, "name")} style={styles.registerInputs} placeholder='username' autoCapitalize="none"></TextInput>
+                                        <TextInput value={signUpData.firstName} onChangeText={(text) => handleSignUpChange(text, "firstName")} style={styles.registerInputs} placeholder='First Name' autoCapitalize="none"></TextInput>
+                                        <TextInput value={signUpData.lastName} onChangeText={(text) => handleSignUpChange(text, "lastName")} style={styles.registerInputs} placeholder='Last Name' autoCapitalize="none"></TextInput>
                                         <TextInput value={signUpData.password} onChangeText={(text) => handleSignUpChange(text, "password")} style={styles.registerInputs} placeholder='password' secureTextEntry autoCapitalize="none"></TextInput>
                                     </View>
                                     <Pressable disabled={!checkCredentials()} style={checkCredentials() ? styles.registerButton : styles.registerButtonDisabled} onPress={handleSignUp}>

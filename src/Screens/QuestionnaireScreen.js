@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+// IMPORTS
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { useState, useContext, useEffect } from 'react';
 import { User } from '../Context/UserContext';
-import * as usersAPI from "../utilities/users-api";
-import * as usersService from "../utilities/users-service";
+
+// COMPONENTS
 import ProfileSetup from '../Components/Questionnaire/ProfileSetup';
 import QuestIntro from '../Components/Questionnaire/QuestIntro';
 import Questions from '../Components/Questionnaire/Questions';
+
+// APIS
+import * as usersAPI from "../utilities/users-api";
+import * as usersService from "../utilities/users-service";
 
 export default function QuestionnaireScreen() {
     const { user, setUser, questionnaire, setQuestionnaire } = useContext(User);
@@ -57,6 +62,7 @@ export default function QuestionnaireScreen() {
         if (image) profileUpdate.profilePic = photoURL.url
         profileUpdate.phoneNumber = parseInt(profileUpdate.phoneNumber)
         profileUpdate.donationGoal = parseInt(profileUpdate.donationGoal)
+        profileUpdate.mediaGalleryPermission = hasGalleryPermission;
         const updatedProfile = await usersAPI.updateProfile(profileUpdate);
         setUser(updatedProfile);
         return usersService.updateUserStorage(updatedProfile);

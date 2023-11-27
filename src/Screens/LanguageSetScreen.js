@@ -10,7 +10,7 @@ import BottomNav from '../Navigation/BottomNav';
 
 export default function LanguageSetScreen({ navigation }) {
     return (
-        <SafeAreaView style={styles.mainContainer} contentContainerStyle={styles.mainContentContainer}>
+        <SafeAreaView style={styles.mainContainer}>
             <Header navigation={navigation} />
             <View style={styles.statsContainer}>
                 <View style={styles.stats}>
@@ -26,9 +26,6 @@ export default function LanguageSetScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    mainContentContainer: {
-        // flexGrow: 1,
-    },
     mainContainer: {
         flexGrow: 1
     },

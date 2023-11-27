@@ -1,30 +1,49 @@
 // IMPORTS
-import { StyleSheet, Text, View, SafeAreaView, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, Pressable, TextInput } from 'react-native'
 import { useContext, useState, useEffect } from 'react';
 import { User } from '../Context/UserContext';
+import * as ImagePicker from "expo-image-picker";
 
 // COMPONENTS
 import Header from '../Components/Header'
 import BottomNav from '../Navigation/BottomNav'
 
 // APIS
-
+import * as usersAPI from "../utilities/users-api";
+import * as usersService from "../utilities/users-service";
+import UserInfo from '../Components/UserInfo';
 
 
 export default function ManageProfileScreen({ navigation }) {
 	const { user } = useContext(User);
 	const [image, setImage] = useState(null);
-    const [profileUpdate, setProfileUpdate] = useState(user)
+    const [formData, setFormData] = useState(user);
+	const [editFirstName, setEditFirstName] = useState(false);
+	const [editLastName, setEditLastName] = useState(false);
+	const [editDonationGoal, setEditDonationGoal] = useState(false);
+	const [editPhoneNumber, setEditPhoneNumber] = useState(false);
+
+	console.log(user)
 
 
-	// useEffect(() => {
-    //     if (!user?.mediaGalleryPermission) {
-    //         (async () => {
-    //             const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    //             setHasGalleryPermission(galleryStatus.status === "granted");
-    //         })()
-    //     }
-    // }, [])
+	useEffect(() => {
+        if (!user?.mediaGalleryPermission) {
+            (async () => {
+                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                setHasGalleryPermission(galleryStatus.status === "granted");
+            })()
+        }
+    }, [])
+
+	function handleChange(text, input) {
+        if (input === "phoneNumber") {
+            textNums = text.replace(/[^0-9\\.]+/g, '');
+            setFormData({ ...formData, [input]: textNums });
+        }
+
+        else return setFormData({ ...formData, [input]: text });
+        
+    }
 
     async function pickImage() {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,26 +73,52 @@ export default function ManageProfileScreen({ navigation }) {
         }
         
         // UPDATE PROFILE
-        if (image) profileUpdate.profilePic = photoURL.url
-        profileUpdate.phoneNumber = parseInt(profileUpdate.phoneNumber)
-        profileUpdate.donationGoal = parseInt(profileUpdate.donationGoal)
-        const updatedProfile = await usersAPI.updateProfile(profileUpdate);
+        if (image) formData.profilePic = photoURL.url
+        formData.phoneNumber = parseInt(formData.phoneNumber)
+        formData.donationGoal = parseInt(formData.donationGoal)
+        const updatedProfile = await usersAPI.updateProfile(formData);
         setUser(updatedProfile);
         return usersService.updateUserStorage(updatedProfile);
     }
 
 	return (
-        <SafeAreaView style={styles.mainContainer}>
+        <SafeAreaView style={{ flexGrow: 1 }}>
             <Header navigation={navigation} />
-			<View style={styles.userInfoContainer}>
-				<View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
-				<Text style={styles.userName}>{user.name}</Text>
-			</View>
-			<View>
-				<Text>Body Container</Text>
-			</View>
-			<View style={styles.submitContainer}>
-				<Pressable style={styles.submitButton} onPress={handleSubmitMessage}><Text style={{color: "white"}}>Submit</Text></Pressable>
+			<View style={styles.mainContainer}>
+				<UserInfo />
+				<View style={styles.mainInputContainer}>
+					<View style={{alignItems: "center", flexDirection: "row"}}>
+						<View style={styles.inputContainer}>
+							<Text style={styles.placeholderText}>First Name</Text>
+							{editFirstName ? <TextInput value={formData.firstName} onChangeText={(text) => handleChange(text, "firstName")}></TextInput> : <Text>{formData.firstName}</Text>}
+						</View>
+						<Pressable onPress={() => setEditFirstName(!editFirstName)}><Text style={editFirstName ? styles.cancel : styles.edit }>{editFirstName ? "cancel" : "edit"}</Text></Pressable>
+					</View>
+					<View style={{alignItems: "center", flexDirection: "row"}}>
+						<View style={styles.inputContainer}>
+							<Text style={styles.placeholderText}>Last Name</Text>
+							{editLastName ? <TextInput value={formData.lastName} onChangeText={(text) => handleChange(text, "lastName")}></TextInput> : <Text>{formData.lastName}</Text>}
+						</View>
+						<Pressable onPress={() => setEditLastName(!editLastName)}><Text style={editLastName ? styles.cancel : styles.edit }>{editLastName ? "cancel" : "edit"}</Text></Pressable>
+					</View>	
+					<View style={{alignItems: "center", flexDirection: "row"}}>
+						<View style={styles.inputContainer}>
+							<Text style={styles.placeholderText}>Donation Goal</Text>
+							{editDonationGoal ? <TextInput value={formData.donationGoal} inputMode="decimal" placeholder="$0.00" onChangeText={(text) => handleChange(text, "donationGoal")}></TextInput> : <Text>{formData.donationGoal}</Text>}
+						</View>
+						<Pressable onPress={() => setEditEmail(!editDonationGoal)}><Text DonationGoal={editEmail ? styles.cancel : styles.edit }>{editEmail ? "cancel" : "edit"}</Text></Pressable>
+					</View>
+					<View style={{alignItems: "center", flexDirection: "row"}}>
+						<View style={styles.inputContainer}>
+							<Text style={styles.placeholderText}>Phone Number</Text>
+							{editPhoneNumber ? <TextInput maxLength={14} value={`${formData.phoneNumber.toString().length > 0 ? "(" : ""}${formData.phoneNumber.toString().slice(0,3)}${formData.phoneNumber.toString().length > 3 ? ") " : ""}${formData.phoneNumber.toString().slice(3,6)}${formData.phoneNumber.toString().length >= 7 ? "-" : ""}${formData.phoneNumber.toString().slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text value={`${formData.phoneNumber.toString().length > 0 ? "(" : ""}${formData.phoneNumber.toString().slice(0,3)}${formData.phoneNumber.toString().length > 3 ? ") " : ""}${formData.phoneNumber.toString().slice(3,6)}${formData.phoneNumber.toString().length >= 7 ? "-" : ""}${formData.phoneNumber.toString().slice(6,10)}`} style={styles.textInputs}></Text>}
+						</View>
+						<Pressable onPress={() => setEditPhoneNumber(!editPhoneNumber)}><Text style={editPhoneNumber ? styles.cancel : styles.edit }>{editPhoneNumber ? "cancel" : "edit"}</Text></Pressable>
+					</View>
+				</View>
+				<View style={styles.submitContainer}>
+					<Pressable style={styles.submitButton} onPress={submitProfileUpdates}><Text style={{color: "white"}}>Save Changes</Text></Pressable>
+				</View>
 			</View>
             <BottomNav navigation={navigation}/>
         </SafeAreaView>
@@ -82,27 +127,21 @@ export default function ManageProfileScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flexGrow: 1,
-		padding: 15,
+        padding: 15
     },
-	userInfoContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        height: "25%",
-    },
-    picContainer: {
-        backgroundColor: "red",
-        borderRadius: "50%",
-        overflow: "hidden",
-        margin: 10
-    },
-    profilePic: {
-        width: 90,
-        height: 90
-    },
-    userName: {
-        textDecorationLine: 'underline',
-    },
+	mainInputContainer: {
+		height: "40%",
+		justifyContent: "space-evenly",
+	},
+	inputContainer: {
+		flexGrow: 1,
+		height: 40,
+		justifyContent: "center",
+	},
+	placeholderText: {
+		color: "#B0B0B0",
+		fontSize: "10px"
+	},
 	submitContainer: {
 		flexGrow: 1,
 		alignItems: "center",
@@ -114,5 +153,13 @@ const styles = StyleSheet.create({
         width: "50%",
         alignItems: "center",
         backgroundColor: "rgb(24,46,42)",
+	},
+	edit: {
+		color: "#007AFF", 
+		textDecorationLine: 'underline',
+	},
+	cancel: {
+		color: "red", 
+		textDecorationLine: 'underline',
 	}
 })

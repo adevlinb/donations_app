@@ -6,7 +6,8 @@ import { User } from '../Context/UserContext';
 import changeAccountIcon from "../../assets/logos/changeAccountIcon.png"
 import { Entypo } from '@expo/vector-icons';
 
-// SCREENS
+// COMPONENTS
+import UserInfo from '../Components/UserInfo';
 
 // APIS
 import * as usersService from "../utilities/users-service";
@@ -25,10 +26,7 @@ export default function CustomDrawerItems(props) {
 
     return (
         <DrawerContentScrollView style={styles.mainContainer} contentContainerStyle={styles.contentMainContainer} {...props}>
-            <View style={styles.userInfoContainer}>
-                <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
-                <Text style={styles.userName}>{user.name}</Text>
-            </View>
+            <UserInfo />
             <DrawerItem label="Home" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Home")}/>
             <DrawerItem label="Search" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("Search")}/>
             <DrawerItem label="ManageProfile" labelStyle={styles.itemLabels} style={styles.itemStyle} onPress={() => props.navigation.navigate("ManageProfile")}/>
@@ -48,24 +46,6 @@ export default function CustomDrawerItems(props) {
 const styles = StyleSheet.create({
     contentMainContainer: {
         flexGrow: 1
-    },
-    userInfoContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        height: "25%",
-    },
-    picContainer: {
-        backgroundColor: "red",
-        borderRadius: "50%",
-        overflow: "hidden",
-        margin: 10
-    },
-    profilePic: {
-        width: 90,
-        height: 90
-    },
-    userName: {
-        textDecorationLine: 'underline',
     },
     itemLabels: {
         fontWeight: 700, 

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, SafeAreaView, Pressable } from 'react-native';
 
 // COMPONENTS
 import Header from '../Components/Header';
-import BottomNav from '../Navigation/BottomNav';
 
 // APIS
 
