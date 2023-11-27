@@ -4,9 +4,7 @@ import { AntDesign, Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vecto
 
 // COMPONENTS
 
-
 // APIS
-
 
 export default function SettingsNav({ navigation }) {
     return (

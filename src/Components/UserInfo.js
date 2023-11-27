@@ -1,18 +1,22 @@
 // IMPORTS
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { useContext } from 'react';
+import { User } from '../Context/UserContext';
 
 // COMPONENTS
-
+import ProfilePicBackup from './ProfilePicBackup';
 
 // APIS
 
 export default function UserInfo() {
-  return (
-    <View style={styles.userInfoContainer}>
-        <View style={styles.picContainer}><Image source={{ uri: user.profilePic}} style={styles.profilePic}/></View>
-        <Text style={styles.userName}>{user?.firstName[0].toUpperCase()}{user?.firstName.slice(1)} {user?.lastName[0].toUpperCase()}{user?.lastName.slice(1)}</Text>
-    </View>
-  )
+    const { user } = useContext(User);
+
+    return (
+        <View style={styles.userInfoContainer}>
+            <View style={styles.picContainer}><Image source={{ uri: user.profilePic } || <ProfilePicBackup />} style={styles.profilePic} /></View>
+            <Text style={styles.userName}>{user?.formattedName}</Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({

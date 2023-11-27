@@ -9,7 +9,7 @@ import BottomNav from '../Navigation/BottomNav';
 import UserInfo from '../Components/UserInfo';
 
 // APIS
-
+import { formatPhoneNumber } from '../utilities/constants';
 
 export default function ContactScreen({ navigation }) {
 	const { user } = useContext(User);
@@ -55,7 +55,7 @@ export default function ContactScreen({ navigation }) {
 				</View>
 				<View style={styles.inputContainer}>
 					<Text style={styles.placeholderText}>Phone Number</Text>
-					<TextInput maxLength={14} value={`${formData.phoneNumber.length > 0 ? "(" : ""}${formData.phoneNumber.slice(0,3)}${formData.phoneNumber.length > 3 ? ") " : ""}${formData.phoneNumber.slice(3,6)}${formData.phoneNumber.length >= 7 ? "-" : ""}${formData.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
+					<TextInput maxLength={14} value={() => formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
 				</View>
 				<View style={styles.textBox}>
 					<Text style={styles.placeholderText}>Types your message here...</Text>

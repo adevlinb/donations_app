@@ -1,8 +1,15 @@
+// IMPORTS
 import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
 import { useEffect } from 'react';
 import smallLogo from "../../../assets/logos/smallLogo.png";
-import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
+
+// COMPONENTS
+import ProfilePicBackup from '../ProfilePicBackup';
+
+// APIS
+import { formatPhoneNumber } from '../../utilities/constants';
+
 
 export default function ProfileSetup({ user, nextPage, profileUpdate, setProfileUpdate, hasGalleryPermission, setHasGalleryPermission, image, setImage }) {
 
@@ -48,24 +55,16 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
             </View>
             <View style={styles.middleContainer}>
                 <View style={{alignItems: "center"}}>
-                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.firstName[0].toUpperCase()}{user?.firstName.slice(1)} {user?.lastName[0].toUpperCase()}{user?.lastName.slice(1)}!</Text>
+                    <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.formattedName}!</Text>
                     <Text style={{ fontSize: 20 }}>Let's setup your profile.</Text>
                 </View>
                 <Pressable onPress={pickImage}>
-                    {image ? 
-                        <Image source={{uri: image.uri}} style={{ height: 0.08 * image.height, width: 0.08 * image.width, margin: 10, alignSelf: "center" }} />
-                    :
-                        <View style={styles.iconsContainer}>
-                            <Ionicons style={styles.addSign} name="ios-add-circle" size={27} color="blue" />
-                            <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
-                            <View style={styles.iconBackground}></View>
-                        </View>
-                    }
+                    {image ?  <Image source={{uri: image.uri}} style={{ height: 0.08 * image.height, width: 0.08 * image.width, margin: 10, alignSelf: "center" }} /> : <ProfilePicBackup />}
                     <Text style={{color:"blue", alignSelf: "center"}} >{image ? "Choose a different photo?" : "Upload Your Profile Picture"}</Text>
                 </Pressable>
                 <View style={styles.inputContainer}>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number:</Text>
-                    <TextInput maxLength={14} value={`${profileUpdate.phoneNumber.length > 0 ? "(" : ""}${profileUpdate.phoneNumber.slice(0,3)}${profileUpdate.phoneNumber.length > 3 ? ") " : ""}${profileUpdate.phoneNumber.slice(3,6)}${profileUpdate.phoneNumber.length >= 7 ? "-" : ""}${profileUpdate.phoneNumber.slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
+                    <TextInput maxLength={14} value={() => formatPhoneNumber(profileUpdate.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Donation Goal:</Text>
                     <TextInput value={profileUpdate.donationGoal} style={styles.textInputs} placeholder='$0.00' onChangeText={(text) => handleChange(text, "donationGoal")}></TextInput>
                 </View>
@@ -115,30 +114,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "rgb(24,46,42)",
     },
-    iconsContainer: {
-        alignItems: "center",
-        marginBottom: 10,
-    },  
-    iconBorder: {
-        borderColor: "black",
-        borderWidth: 2,
-        borderRadius: "50%",
-        overflow: "hidden",
-    },
     addSign: {
         position: "absolute",
         bottom: 0,
         right: 45,
         zIndex: 1,
-    },
-    iconBackground: {
-        position: "absolute",
-        bottom: 5,
-        right: 50,
-        zIndex: 0,
-        height: 15,
-        width: 15,
-        backgroundColor: "white",
     },
     inputContainer: {
         width: "100%",

@@ -42,4 +42,8 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
+userSchema.virtual('formattedName').get(() => {
+    return `${this.firstName[0].toUpperCase()}${this.firstName.slice(1)} ${this.lastName[0].toUpperCase()}${this.lastName.slice(1)}`
+});
+
 module.exports = mongoose.model('User', userSchema);

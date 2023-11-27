@@ -7,11 +7,12 @@ import * as ImagePicker from "expo-image-picker";
 // COMPONENTS
 import Header from '../Components/Header'
 import BottomNav from '../Navigation/BottomNav'
+import UserInfo from '../Components/UserInfo';
 
 // APIS
 import * as usersAPI from "../utilities/users-api";
 import * as usersService from "../utilities/users-service";
-import UserInfo from '../Components/UserInfo';
+import { formatPhoneNumber } from '../utilities/constants';
 
 
 export default function ManageProfileScreen({ navigation }) {
@@ -111,7 +112,7 @@ export default function ManageProfileScreen({ navigation }) {
 					<View style={{alignItems: "center", flexDirection: "row"}}>
 						<View style={styles.inputContainer}>
 							<Text style={styles.placeholderText}>Phone Number</Text>
-							{editPhoneNumber ? <TextInput maxLength={14} value={`${formData.phoneNumber.toString().length > 0 ? "(" : ""}${formData.phoneNumber.toString().slice(0,3)}${formData.phoneNumber.toString().length > 3 ? ") " : ""}${formData.phoneNumber.toString().slice(3,6)}${formData.phoneNumber.toString().length >= 7 ? "-" : ""}${formData.phoneNumber.toString().slice(6,10)}`} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text value={`${formData.phoneNumber.toString().length > 0 ? "(" : ""}${formData.phoneNumber.toString().slice(0,3)}${formData.phoneNumber.toString().length > 3 ? ") " : ""}${formData.phoneNumber.toString().slice(3,6)}${formData.phoneNumber.toString().length >= 7 ? "-" : ""}${formData.phoneNumber.toString().slice(6,10)}`} style={styles.textInputs}></Text>}
+							{editPhoneNumber ? <TextInput maxLength={14} value={() => formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text value={() => formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs}></Text>}
 						</View>
 						<Pressable onPress={() => setEditPhoneNumber(!editPhoneNumber)}><Text style={editPhoneNumber ? styles.cancel : styles.edit }>{editPhoneNumber ? "cancel" : "edit"}</Text></Pressable>
 					</View>
