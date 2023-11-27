@@ -2,9 +2,10 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useContext } from 'react';
 import { User } from '../Context/UserContext';
+import { Ionicons } from '@expo/vector-icons';
 
 // COMPONENTS
-import ProfilePicBackup from './ProfilePicBackup';
+import {  ProfilePicBackup } from "./ProfilePicBackup.js"
 
 // APIS
 
@@ -13,7 +14,14 @@ export default function UserInfo() {
 
     return (
         <View style={styles.userInfoContainer}>
-            <View style={styles.picContainer}><Image source={{ uri: user.profilePic } || <ProfilePicBackup />} style={styles.profilePic} /></View>
+            <View style={styles.picContainer}>
+                {user.profilePic === "" ? 
+                    <ProfilePicBackup />
+                :
+                    <Image source={{ uri: user.profilePic }} style={styles.profilePic} />
+                }
+            </View>
+
             <Text style={styles.userName}>{user?.formattedName}</Text>
         </View>
     )
@@ -26,7 +34,6 @@ const styles = StyleSheet.create({
         height: "25%",
     },
     picContainer: {
-        backgroundColor: "red",
         borderRadius: "50%",
         overflow: "hidden",
         margin: 10

@@ -30,8 +30,9 @@ const userSchema = new Schema({
         transform: function (doc, ret) {
             delete ret.password;
             return ret;
-        }
-    }
+        },
+        virtuals: true
+    },
 });
 
 userSchema.pre('save', async function (next) {
@@ -42,8 +43,8 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
-userSchema.virtual('formattedName').get(() => {
+userSchema.virtual('formattedName').get(function () {
     return `${this.firstName[0].toUpperCase()}${this.firstName.slice(1)} ${this.lastName[0].toUpperCase()}${this.lastName.slice(1)}`
-});
+})
 
 module.exports = mongoose.model('User', userSchema);

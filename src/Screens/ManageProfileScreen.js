@@ -24,17 +24,14 @@ export default function ManageProfileScreen({ navigation }) {
 	const [editDonationGoal, setEditDonationGoal] = useState(false);
 	const [editPhoneNumber, setEditPhoneNumber] = useState(false);
 
-	console.log(user)
-
-
-	useEffect(() => {
-        if (!user?.mediaGalleryPermission) {
-            (async () => {
-                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                setHasGalleryPermission(galleryStatus.status === "granted");
-            })()
-        }
-    }, [])
+	// useEffect(() => {
+    //     if (!user?.mediaGalleryPermission) {
+    //         (async () => {
+    //             const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    //             setHasGalleryPermission(galleryStatus.status === "granted");
+    //         })()
+    //     }
+    // }, [])
 
 	function handleChange(text, input) {
         if (input === "phoneNumber") {
@@ -88,31 +85,31 @@ export default function ManageProfileScreen({ navigation }) {
 			<View style={styles.mainContainer}>
 				<UserInfo />
 				<View style={styles.mainInputContainer}>
-					<View style={{alignItems: "center", flexDirection: "row"}}>
-						<View style={styles.inputContainer}>
+					<View style={styles.nextLayerContainer}>
+						<View style={editFirstName ? styles.inputContainerActive : styles.inputContainer}>
 							<Text style={styles.placeholderText}>First Name</Text>
 							{editFirstName ? <TextInput value={formData.firstName} onChangeText={(text) => handleChange(text, "firstName")}></TextInput> : <Text>{formData.firstName}</Text>}
 						</View>
 						<Pressable onPress={() => setEditFirstName(!editFirstName)}><Text style={editFirstName ? styles.cancel : styles.edit }>{editFirstName ? "cancel" : "edit"}</Text></Pressable>
 					</View>
-					<View style={{alignItems: "center", flexDirection: "row"}}>
-						<View style={styles.inputContainer}>
+					<View style={styles.nextLayerContainer}>
+						<View style={editLastName ? styles.inputContainerActive : styles.inputContainer}>
 							<Text style={styles.placeholderText}>Last Name</Text>
 							{editLastName ? <TextInput value={formData.lastName} onChangeText={(text) => handleChange(text, "lastName")}></TextInput> : <Text>{formData.lastName}</Text>}
 						</View>
 						<Pressable onPress={() => setEditLastName(!editLastName)}><Text style={editLastName ? styles.cancel : styles.edit }>{editLastName ? "cancel" : "edit"}</Text></Pressable>
 					</View>	
-					<View style={{alignItems: "center", flexDirection: "row"}}>
-						<View style={styles.inputContainer}>
+					<View style={styles.nextLayerContainer}>
+						<View style={editDonationGoal ? styles.inputContainerActive : styles.inputContainer}>
 							<Text style={styles.placeholderText}>Donation Goal</Text>
 							{editDonationGoal ? <TextInput value={formData.donationGoal} inputMode="decimal" placeholder="$0.00" onChangeText={(text) => handleChange(text, "donationGoal")}></TextInput> : <Text>{formData.donationGoal}</Text>}
 						</View>
-						<Pressable onPress={() => setEditEmail(!editDonationGoal)}><Text DonationGoal={editEmail ? styles.cancel : styles.edit }>{editEmail ? "cancel" : "edit"}</Text></Pressable>
+						<Pressable onPress={() => setEditDonationGoal(!editDonationGoal)}><Text style={editDonationGoal ? styles.cancel : styles.edit }>{editDonationGoal ? "cancel" : "edit"}</Text></Pressable>
 					</View>
-					<View style={{alignItems: "center", flexDirection: "row"}}>
-						<View style={styles.inputContainer}>
+					<View style={styles.nextLayerContainer}>
+						<View style={editPhoneNumber ? styles.inputContainerActive : styles.inputContainer}>
 							<Text style={styles.placeholderText}>Phone Number</Text>
-							{editPhoneNumber ? <TextInput maxLength={14} value={() => formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text value={() => formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs}></Text>}
+							{editPhoneNumber ? <TextInput maxLength={14} value={formatPhoneNumber(formData.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' inputMode='tel' onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput> : <Text style={styles.textInputs}>{formatPhoneNumber(formData.phoneNumber)}</Text>}
 						</View>
 						<Pressable onPress={() => setEditPhoneNumber(!editPhoneNumber)}><Text style={editPhoneNumber ? styles.cancel : styles.edit }>{editPhoneNumber ? "cancel" : "edit"}</Text></Pressable>
 					</View>
@@ -134,14 +131,26 @@ const styles = StyleSheet.create({
 		height: "40%",
 		justifyContent: "space-evenly",
 	},
+	nextLayerContainer: {
+		alignItems: "center", 
+		flexDirection: "row",
+		justifyContent: "space-between"
+	},
 	inputContainer: {
-		flexGrow: 1,
 		height: 40,
 		justifyContent: "center",
 	},
+	inputContainerActive: {
+		width: "50%",
+		height: 40,
+		justifyContent: "center",
+		borderStyle: "solid",
+        borderWidth: 1,
+		borderColor: "red",
+	},
 	placeholderText: {
 		color: "#B0B0B0",
-		fontSize: "10px"
+		fontSize: 10
 	},
 	submitContainer: {
 		flexGrow: 1,

@@ -36,8 +36,6 @@ export default function StackNavigation() {
     const Drawer = createDrawerNavigator();
     const { user, setUser, questionnaire } = useContext(User);
 
-    console.log(questionnaire)
-
     return (
         <NavigationContainer>
 

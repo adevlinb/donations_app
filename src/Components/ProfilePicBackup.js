@@ -6,14 +6,22 @@ import { Ionicons } from '@expo/vector-icons';
 
 // APIS
 
-export default function ProfilePicBackup() {
+export function ProfilePicBackup() {
   return (
     <View style={styles.iconsContainer}>
-        <Ionicons style={styles.addSign} name="ios-add-circle" size={27} color="blue" />
         <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
-        <View style={styles.iconBackground}></View>
     </View>
   )
+}
+
+export function addProfilePic() {
+    return (
+        <View style={styles.iconsContainer}>
+            <Ionicons style={styles.addSign} name="ios-add-circle" size={27} color="blue" />
+            <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
+            <View style={styles.iconBackground}></View>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
