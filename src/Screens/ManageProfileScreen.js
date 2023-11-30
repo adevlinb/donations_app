@@ -16,13 +16,14 @@ import { formatPhoneNumber } from '../utilities/constants';
 
 
 export default function ManageProfileScreen({ navigation }) {
-	const { user, userDonations } = useContext(User);
+	const { user, setUser, userDonations } = useContext(User);
 	const [image, setImage] = useState({ uri: user.profilePic });
     const [formData, setFormData] = useState(user);
 	const [editFirstName, setEditFirstName] = useState(false);
 	const [editLastName, setEditLastName] = useState(false);
 	const [editDonationGoal, setEditDonationGoal] = useState(false);
 	const [editPhoneNumber, setEditPhoneNumber] = useState(false);
+	const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
 
 	function handleChange(text, input) {
         if (input === "phoneNumber") {
@@ -40,18 +41,18 @@ export default function ManageProfileScreen({ navigation }) {
 			image.uri === user.profilePic &&
 			formData.firstName === user.firstName &&
 			formData.lastName === user.lastName
-			) {
-				console.log("all items true");
-				return true
-			}
-		else {
-			console.log("one item false")
-			return false
-		}
+			)
+			return true
+			
+		else return false
+		
 	}
 
+	console.log(user, "user check")
+
 	async function submitProfileUpdates() {
-		console.log("submit updated")
+
+		console.log("submit updated", user)
         let photoURL = null;
 
         if (image.uri !== user.profilePic) {
@@ -63,23 +64,25 @@ export default function ManageProfileScreen({ navigation }) {
                 uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
             });
             // UPLOAD PHOTO
-            // photoURL = await usersAPI.uploadProfilePhoto(imageData)
-			// formData.profilePic = photoURL.url
+            photoURL = await usersAPI.uploadProfilePhoto(imageData)
+			formData.profilePic = photoURL.url
         }
         
         // UPDATE PROFILE
         if (parseInt(formData.phoneNumber) !== parseInt(user.phoneNumber)) formData.phoneNumber = parseInt(formData.phoneNumber)
         if (parseInt(formData.donationGoal) !== parseInt(user.gonationGoal)) formData.donationGoal = parseInt(formData.donationGoal)
-        // const updatedProfile = await usersAPI.updateProfile(formData);
-        // setUser(updatedProfile);
-        // return usersService.updateUserStorage(updatedProfile);
+        const updatedProfile = await usersAPI.updateProfile(formData);
+		const updatedUser = usersService.updateUserStorage(updatedProfile);
+        setUser(updatedUser);
+		setFormData(updatedUser)
+		return checkChanges();
     }
 
 	return (
         <SafeAreaView style={{ flexGrow: 1 }}>
             <Header navigation={navigation} />
 			<ScrollView contentContainerStyle={styles.mainContainer}>
-				<UserImagePicker image={image} setImage={setImage} />
+				<UserImagePicker image={image} setImage={setImage} hasGalleryPermission={hasGalleryPermission} setHasGalleryPermission={setHasGalleryPermission}/>
 				<View style={styles.statsContainer}>
 					<View style={{ flexDirection: "row", alignItems: "center"}}>
 						<Entypo name="star" size={24} color="#C13584" />

@@ -28,12 +28,15 @@ export function UserInfo() {
 }
 
 export function UserImagePicker({ image, setImage, hasGalleryPermission, setHasGalleryPermission }) {
+    const { user } = useContext(User);
 
-    	useEffect(() => {
-            (async () => {
-                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                setHasGalleryPermission(galleryStatus.status === "granted");
-            })();
+    console.log(user, "user info pick image")
+
+    useEffect(() => {
+        (async () => {
+            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            setHasGalleryPermission(galleryStatus.status === "granted");
+        })();
     }, [])
 
     async function pickImage() {
@@ -44,14 +47,14 @@ export function UserImagePicker({ image, setImage, hasGalleryPermission, setHasG
             quality: 1,
         });
 
-        if (result?.canceled || result?.cancelled) setImage({ uri: ""})
+        if (result?.canceled || result?.cancelled) setImage({ uri: user.profilePic })
         else setImage(result?.assets[0])
     }
 
     return (
         <View style={styles.userInfoContainer}>
-            <Pressable onPress={pickImage}>
-                {image.uri === "" ? <ProfilePicBackup /> : <Image source={{uri: image.uri}} style={{ height: 0.05 * image.height, width: 0.05 * image.width, margin: 10, alignSelf: "center" }} />}
+            <Pressable onPress={pickImage} style={{ justifyContent: "center" }}>
+                {image.uri === "" ? <ProfilePicBackup /> : <Image source={{uri: image.uri}} style={[styles.profilePic, styles.picContainer]} />}
                 <Text style={{color:"blue", alignSelf: "center"}} >{image.uri === "" ? "Upload Your Profile Picture" : "Choose a different photo"}</Text>
             </Pressable>
         </View>
@@ -67,7 +70,8 @@ const styles = StyleSheet.create({
     picContainer: {
         borderRadius: "50%",
         overflow: "hidden",
-        margin: 10
+        margin: 10,
+        alignSelf: "center",
     },
     profilePic: {
         width: 90,

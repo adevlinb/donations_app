@@ -78,10 +78,14 @@ function createJWT(user) {
 
 async function updateProfile(req, res) {
     try {
-        let updatedUser = await User.findOneAndUpdate({ _id: req.user._id}, req.body, { new: true })
+        let updatedUser = await User.findOne({ _id: req.user._id});
+        for (const [key, value] in Object.entries(req.body)) {
+            updatedUser[key] = value
+        }
         updatedUser = await updatedUser.save();
         return res.json(updatedUser);
     } catch (err) {
+        console.log(err)
         res.status(400).json(err);
     }
 }
