@@ -7,7 +7,7 @@ import { User } from '../Context/UserContext';
 import Header from '../Components/Header'
 import BottomNav from '../Navigation/BottomNav'
 import SettingsNav from '../Navigation/SettingsNav';
-import UserInfo from '../Components/UserInfo';
+import { UserInfo } from '../Components/UserInfo';
 
 // APIS
 
@@ -39,6 +39,4 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		fontSize: 20,
 	},
-
-
 })

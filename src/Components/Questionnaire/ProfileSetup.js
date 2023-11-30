@@ -2,10 +2,11 @@
 import { StyleSheet, Text, View, Image, Pressable, TextInput } from 'react-native';
 import { useEffect } from 'react';
 import smallLogo from "../../../assets/logos/smallLogo.png";
-import * as ImagePicker from "expo-image-picker";
+
 
 // COMPONENTS
-import ProfilePicBackup from '../ProfilePicBackup';
+// import ProfilePicBackup from '../ProfilePicBackup';
+import { UserImagePicker } from '../UserInfo';
 
 // APIS
 import { formatPhoneNumber } from '../../utilities/constants';
@@ -24,28 +25,6 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
         }
     }
 
-    useEffect(() => {
-        if (!user?.mediaGalleryPermission) {
-            (async () => {
-                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                setHasGalleryPermission(galleryStatus.status === "granted");
-            })()
-        }
-    }, [])
-
-    async function pickImage() {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4,3],
-            quality: 1,
-        });
-
-        if (result?.canceled || result?.cancelled) setImage(null)
-        else setImage(result?.assets[0])
-        
-    }
-
 
     return (
         <View style={styles.mainContainer}>
@@ -58,10 +37,7 @@ export default function ProfileSetup({ user, nextPage, profileUpdate, setProfile
                     <Text style={{ fontSize: 35, fontWeight: "bold" }}>Welcome, {user?.formattedName}!</Text>
                     <Text style={{ fontSize: 20 }}>Let's setup your profile.</Text>
                 </View>
-                <Pressable onPress={pickImage}>
-                    {image ?  <Image source={{uri: image.uri}} style={{ height: 0.08 * image.height, width: 0.08 * image.width, margin: 10, alignSelf: "center" }} /> : <ProfilePicBackup />}
-                    <Text style={{color:"blue", alignSelf: "center"}} >{image ? "Choose a different photo?" : "Upload Your Profile Picture"}</Text>
-                </Pressable>
+                <UserImagePicker image={image} setImage={setImage} />
                 <View style={styles.inputContainer}>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number:</Text>
                     <TextInput maxLength={14} value={() => formatPhoneNumber(profileUpdate.phoneNumber)} style={styles.textInputs} placeholder='(000) 000-0000' keyboardType="numeric" onChangeText={(text) => handleChange(text, "phoneNumber")}></TextInput>

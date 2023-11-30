@@ -15,7 +15,7 @@ import * as usersService from "../utilities/users-service";
 export default function QuestionnaireScreen() {
     const { user, setUser, questionnaire, setQuestionnaire } = useContext(User);
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState({ uri: user.profilePic });
     const [currentPage, setCurrentPage] = useState(0);
     const [updatedQuest, setUpdatedQuest] = useState(questionnaire);
     const [profileUpdate, setProfileUpdate] = useState({

@@ -24,6 +24,8 @@ const userSchema = new Schema({
       required: true
     },
     mediaGalleryPermission: { type: Boolean, default: false },
+    confirmationCode: {type: String, default: generateCode()},
+    verified: { type: Boolean, default: false },
 }, {
     timestamps: true,
     toJSON: {
@@ -46,5 +48,14 @@ userSchema.pre('save', async function (next) {
 userSchema.virtual('formattedName').get(function () {
     return `${this.firstName[0].toUpperCase()}${this.firstName.slice(1)} ${this.lastName[0].toUpperCase()}${this.lastName.slice(1)}`
 })
+
+function generateCode() {
+    const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let token = '';
+    for (let i = 0; i < 25; i++) {
+        token += characters[Math.floor(Math.random() * characters.length )];
+    }
+    return token;
+}
 
 module.exports = mongoose.model('User', userSchema);

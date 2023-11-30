@@ -6,7 +6,7 @@ import { User } from '../Context/UserContext';
 // COMPONENTS
 import Header from '../Components/Header';
 import BottomNav from '../Navigation/BottomNav';
-import UserInfo from '../Components/UserInfo';
+import { UserInfo } from '../Components/UserInfo';
 
 // APIS
 import { formatPhoneNumber } from '../utilities/constants';

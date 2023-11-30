@@ -1,14 +1,13 @@
 // IMPORTS
-import { StyleSheet, Text, View, SafeAreaView, Image, Pressable, TextInput } from 'react-native'
-import { useContext, useState, useEffect } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Image, Pressable, TextInput, ScrollView } from 'react-native'
+import { useContext, useEffect, useState } from 'react';
 import { User } from '../Context/UserContext';
-import * as ImagePicker from "expo-image-picker";
-import { Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 
 // COMPONENTS
 import Header from '../Components/Header'
 import BottomNav from '../Navigation/BottomNav'
-import UserInfo from '../Components/UserInfo';
+import { UserInfo, UserImagePicker } from '../Components/UserInfo';
 
 // APIS
 import * as usersAPI from "../utilities/users-api";
@@ -17,22 +16,13 @@ import { formatPhoneNumber } from '../utilities/constants';
 
 
 export default function ManageProfileScreen({ navigation }) {
-	const { user } = useContext(User);
-	const [image, setImage] = useState(null);
+	const { user, userDonations } = useContext(User);
+	const [image, setImage] = useState({ uri: user.profilePic });
     const [formData, setFormData] = useState(user);
 	const [editFirstName, setEditFirstName] = useState(false);
 	const [editLastName, setEditLastName] = useState(false);
 	const [editDonationGoal, setEditDonationGoal] = useState(false);
 	const [editPhoneNumber, setEditPhoneNumber] = useState(false);
-
-	// useEffect(() => {
-    //     if (!user?.mediaGalleryPermission) {
-    //         (async () => {
-    //             const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    //             setHasGalleryPermission(galleryStatus.status === "granted");
-    //         })()
-    //     }
-    // }, [])
 
 	function handleChange(text, input) {
         if (input === "phoneNumber") {
@@ -41,25 +31,25 @@ export default function ManageProfileScreen({ navigation }) {
         }
 
         else return setFormData({ ...formData, [input]: text });
-        
     }
 
-    async function pickImage() {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4,3],
-            quality: 1,
-        });
-
-        if (result?.canceled || result?.cancelled) setImage(null)
-        else setImage(result?.assets[0]) 
-    }
+	function checkChanges() {
+		console.log("checking changes")
+		if (formData.phoneNumber === user.phoneNumber && 
+			formData.donationGoal === user.donationGoal &&
+			image.uri === user.profilePic &&
+			formData.firstName === user.firstName &&
+			formData.lastName === user.lastName
+			)
+			return true
+		else return false
+	}
 
 	async function submitProfileUpdates() {
+		console.log("submit updated")
         let photoURL = null;
 
-        if (image) {
+        if (image.uri !== user.profilePic) {
             const imageData = new FormData();
             imageData.append('photo', {
                 name: image.fileName,
@@ -69,30 +59,30 @@ export default function ManageProfileScreen({ navigation }) {
             });
             // UPLOAD PHOTO
             photoURL = await usersAPI.uploadProfilePhoto(imageData)
+			formData.profilePic = photoURL.url
         }
         
         // UPDATE PROFILE
-        if (image) formData.profilePic = photoURL.url
-        formData.phoneNumber = parseInt(formData.phoneNumber)
-        formData.donationGoal = parseInt(formData.donationGoal)
-        const updatedProfile = await usersAPI.updateProfile(formData);
-        setUser(updatedProfile);
-        return usersService.updateUserStorage(updatedProfile);
+        if (parseInt(formData.phoneNumber) !== parseInt(user.phoneNumber)) formData.phoneNumber = parseInt(formData.phoneNumber)
+        if (parseInt(formData.donationGoal) !== parseInt(user.gonationGoal)) formData.donationGoal = parseInt(formData.donationGoal)
+        // const updatedProfile = await usersAPI.updateProfile(formData);
+        // setUser(updatedProfile);
+        // return usersService.updateUserStorage(updatedProfile);
     }
 
 	return (
         <SafeAreaView style={{ flexGrow: 1 }}>
             <Header navigation={navigation} />
-			<View style={styles.mainContainer}>
-				<UserInfo />
+			<ScrollView contentContainerStyle={styles.mainContainer}>
+				<UserImagePicker image={image} setImage={setImage} />
 				<View style={styles.statsContainer}>
 					<View style={{ flexDirection: "row", alignItems: "center"}}>
 						<Entypo name="star" size={24} color="#C13584" />
-						<Text>Donations?</Text>
+						<Text style={{ marginLeft: 10 }}>{userDonations.length} Donations?</Text>
 					</View>
 					<View style={{ flexDirection: "row", alignItems: "center"}}>
-					<FontAwesome5 name="user-check" size={24} color="#C13584" />
-						<Text>Verified?</Text>
+						<MaterialIcons name="verified-user" size={24} color="#C13584" />
+						<Text style={{ marginLeft: 10 }}>Verified?</Text>
 					</View>
 				</View>
 				<View style={styles.mainInputContainer}>
@@ -126,9 +116,9 @@ export default function ManageProfileScreen({ navigation }) {
 					</View>
 				</View>
 				<View style={styles.submitContainer}>
-					<Pressable style={styles.submitButton} onPress={submitProfileUpdates}><Text style={{color: "white"}}>Save Changes</Text></Pressable>
+					<Pressable disabled style={styles.submitButton} onPress={submitProfileUpdates}><Text style={{color: "white"}}>Save Changes</Text></Pressable>
 				</View>
-			</View>
+			</ScrollView>
             <BottomNav navigation={navigation}/>
         </SafeAreaView>
     )
@@ -137,17 +127,21 @@ export default function ManageProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
     mainContainer: {
 		flexGrow: 1,
-        padding: 15,
+        padding: 30,
+		paddingBottom: "15%",
 		justifyContent: "space-between"
     },
 	statsContainer: {
-
+		marginVertical: 20,
+		gap: 10,
+		width: "100%",
+		justifyContent: "space-between",
 	},
 	mainInputContainer: {
 		justifyContent: "space-evenly",
 	},
 	nextLayerContainer: {
-		alignItems: "center", 
+		alignItems: "center",
 		flexDirection: "row",
 		justifyContent: "space-between"
 	},

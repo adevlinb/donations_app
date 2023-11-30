@@ -7,7 +7,7 @@ import changeAccountIcon from "../../assets/logos/changeAccountIcon.png"
 import { Entypo } from '@expo/vector-icons';
 
 // COMPONENTS
-import UserInfo from '../Components/UserInfo';
+import { UserInfo } from '../Components/UserInfo';
 
 // APIS
 import * as usersService from "../utilities/users-service";

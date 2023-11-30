@@ -7,7 +7,7 @@ import NoFavorites from "../../assets/no-favorites.png";
 // COMPONENTS
 import Header from '../Components/Header';
 import BottomNav from '../Navigation/BottomNav';
-import UserInfo from '../Components/UserInfo';
+import { UserInfo } from '../Components/UserInfo';
 
 // APIS
 

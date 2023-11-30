@@ -7,6 +7,7 @@ const User = createContext();
 const UserContext = ({children}) => {
     const [user, setUser] = useState(null);
     const [questionnaire, setQuestionnaire] = useState(null)
+    const [userDonations, setUserDonations] = useState([]);
 
     useEffect(() => {
         async function getUser() {
@@ -23,7 +24,7 @@ const UserContext = ({children}) => {
     }, [user])
 
     return (
-        <User.Provider value={{user , setUser, questionnaire, setQuestionnaire }}>
+        <User.Provider value={{user , setUser, questionnaire, setQuestionnaire, userDonations, setUserDonations }}>
             {children}
         </User.Provider>
     )

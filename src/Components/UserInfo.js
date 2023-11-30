@@ -1,15 +1,15 @@
 // IMPORTS
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { useContext } from 'react';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { useContext, useEffect } from 'react';
 import { User } from '../Context/UserContext';
-import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from "expo-image-picker";
 
 // COMPONENTS
-import {  ProfilePicBackup } from "./ProfilePicBackup.js"
+import { ProfilePicBackup } from "./ProfilePicBackup.js"
 
 // APIS
 
-export default function UserInfo() {
+export function UserInfo() {
     const { user } = useContext(User);
 
     return (
@@ -27,11 +27,42 @@ export default function UserInfo() {
     )
 }
 
+export function UserImagePicker({ image, setImage, hasGalleryPermission, setHasGalleryPermission }) {
+
+    	useEffect(() => {
+            (async () => {
+                const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                setHasGalleryPermission(galleryStatus.status === "granted");
+            })();
+    }, [])
+
+    async function pickImage() {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4,3],
+            quality: 1,
+        });
+
+        if (result?.canceled || result?.cancelled) setImage({ uri: ""})
+        else setImage(result?.assets[0])
+    }
+
+    return (
+        <View style={styles.userInfoContainer}>
+            <Pressable onPress={pickImage}>
+                {image.uri === "" ? <ProfilePicBackup /> : <Image source={{uri: image.uri}} style={{ height: 0.05 * image.height, width: 0.05 * image.width, margin: 10, alignSelf: "center" }} />}
+                <Text style={{color:"blue", alignSelf: "center"}} >{image.uri === "" ? "Upload Your Profile Picture" : "Choose a different photo"}</Text>
+            </Pressable>
+        </View>
+    )
+
+}
+
 const styles = StyleSheet.create({
     userInfoContainer: {
         alignItems: "center",
         justifyContent: "center",
-        height: "25%",
     },
     picContainer: {
         borderRadius: "50%",

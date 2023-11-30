@@ -1,20 +1,18 @@
 // IMPORTS
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native'
-import { useContext, useState, useEffect } from 'react';
-import { User } from '../Context/UserContext';
+import { useState, useEffect } from 'react';
 import NoFavorites from "../../assets/no-favorites.png";
 
 // COMPONENTS
 import Header from '../Components/Header';
 import BottomNav from '../Navigation/BottomNav';
-import UserInfo from '../Components/UserInfo';
+import { UserInfo } from '../Components/UserInfo';
 
 // APIS
 
 
 
 export default function FavoritesScreen({ navigation }) {
-	const { user } = useContext(User);
 	const [userFavorites, setUserFavorites] = useState([])
 
 	useEffect(() => {
