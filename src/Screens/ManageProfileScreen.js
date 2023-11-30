@@ -35,14 +35,19 @@ export default function ManageProfileScreen({ navigation }) {
 
 	function checkChanges() {
 		console.log("checking changes")
-		if (formData.phoneNumber === user.phoneNumber && 
-			formData.donationGoal === user.donationGoal &&
+		if (parseInt(formData.phoneNumber) === parseInt(user.phoneNumber) && 
+			parseInt(formData.donationGoal) === parseInt(user.donationGoal) &&
 			image.uri === user.profilePic &&
 			formData.firstName === user.firstName &&
 			formData.lastName === user.lastName
-			)
-			return true
-		else return false
+			) {
+				console.log("all items true");
+				return true
+			}
+		else {
+			console.log("one item false")
+			return false
+		}
 	}
 
 	async function submitProfileUpdates() {
@@ -58,8 +63,8 @@ export default function ManageProfileScreen({ navigation }) {
                 uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
             });
             // UPLOAD PHOTO
-            photoURL = await usersAPI.uploadProfilePhoto(imageData)
-			formData.profilePic = photoURL.url
+            // photoURL = await usersAPI.uploadProfilePhoto(imageData)
+			// formData.profilePic = photoURL.url
         }
         
         // UPDATE PROFILE
@@ -116,7 +121,7 @@ export default function ManageProfileScreen({ navigation }) {
 					</View>
 				</View>
 				<View style={styles.submitContainer}>
-					<Pressable disabled style={styles.submitButton} onPress={submitProfileUpdates}><Text style={{color: "white"}}>Save Changes</Text></Pressable>
+					<Pressable disabled={checkChanges()} style={checkChanges() ? styles.submitButtonDisabled : styles.submitButton} onPress={submitProfileUpdates}><Text style={{color: "white"}}>Save Changes</Text></Pressable>
 				</View>
 			</ScrollView>
             <BottomNav navigation={navigation}/>
@@ -172,6 +177,13 @@ const styles = StyleSheet.create({
         width: "50%",
         alignItems: "center",
         backgroundColor: "rgb(24,46,42)",
+	},
+	submitButtonDisabled: {
+		padding: 10,
+        borderRadius: 7.5,
+        width: "50%",
+        alignItems: "center",
+        backgroundColor: "rgba(24,46,42, 0.5)",
 	},
 	edit: {
 		color: "#007AFF", 

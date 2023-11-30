@@ -7,11 +7,11 @@ import { Ionicons } from '@expo/vector-icons';
 // APIS
 
 export function ProfilePicBackup() {
-  return (
-    <View style={styles.iconsContainer}>
-        <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
-    </View>
-  )
+    return (
+        <View style={styles.iconsContainer}>
+            <View style={styles.iconBorder}><Ionicons name="person" size={60} color="black" /></View>
+        </View>
+    )
 }
 
 export function addProfilePic() {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     iconsContainer: {
         alignItems: "center",
         marginBottom: 10,
-    },  
+    },
     iconBorder: {
         borderColor: "black",
         borderWidth: 2,
